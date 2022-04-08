@@ -1,6 +1,8 @@
+import csv
 import enum
 import os
 from dataclasses import dataclass
+from typing import Optional, List
 
 import pygame
 
@@ -35,3 +37,27 @@ class ActionType(enum.Enum):
   JUMP = "jump"
   MOVE_LEFT = "move_left"
   MOVE_RIGHT = "move_right"
+
+
+@dataclass
+class LevelConfig:
+  id: int = 0
+  rows: int = 16
+  cols: int = 150
+  tile_size: int = GameConfig.height // rows
+  data_dir: str = "data/level/"
+  raw_data: Optional[List] = None
+
+  def __post_init__(self):
+    with open(os.path.join(self.data_dir, str(self.id) + ".csv"), newline="") as csvfile:
+      reader = csv.reader(csvfile, delimiter=",")
+      self.raw_data = [[int(tile) for tile in row] for row in reader]
+
+
+def load_tile_img(path):
+  img = pygame.image.load(path)
+  img = pygame.transform.scale(img, (LevelConfig.tile_size, LevelConfig.tile_size))
+  return img
+
+
+TILE_IMGS = [load_tile_img(f"assets/tile/{tile_id}.png") for tile_id in range(21)]

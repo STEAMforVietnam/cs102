@@ -3,6 +3,7 @@ import pygame
 
 from config import BACKGROUND, RED, GameConfig, PlayerConfig, ActionType
 from sprites.player import Player
+from world import World
 
 pygame.init()
 
@@ -23,10 +24,14 @@ class GameManager:
       speed=PlayerConfig.speed,
       y_speed=PlayerConfig.y_speed,
     )
+    self.world = World()
+    self.world.load_level(1)
     self.is_running = False
+    self.screen_offset = 0
 
   def redraw(self):
     self.screen.blit(BACKGROUND, (0, 0))
+    self.world.draw(self.screen, self.screen_offset)
     pygame.draw.line(
       self.screen, RED, (0, GameConfig.height - 10), (GameConfig.width, GameConfig.height - 10))
     pygame.draw.rect(
