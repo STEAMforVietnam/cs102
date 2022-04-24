@@ -1,92 +1,73 @@
-from cmath import rect
-from re import L
-import pygame as pg 
-import os
-import time
-import random
-from const import *
-from player import Player
-from item import *
-from tick import *
+import logging
+import pygame
 
-#initialize pygame
-pg.init()
-
-#create screen
-WIN = pg.display.set_mode((WIDTH,HEIGHT))
-pg.display.set_caption("S4V Demo")
-
-def main():
-    global player_sprite
-    RED = (255,0,0)
-    run = True
-    clock = pg.time.Clock()
-    #create player
-    player = Player(250,HEIGHT-PLAYER_HEIGHT,PLAYER_SPRITE_DIR,0.2)
-    player_sprite = player
-    moving_left, moving_right = False, False
-    #create items
-    item = Items('Blue', 300, 650)
-    item_boxes_group.add(item)
-    item = Items('Red', 700, 400)
-    item_boxes_group.add(item)
-    # Create rect
-    rect = pg.Rect(600, HEIGHT-200,200,50)
-    # main function to redraw all objects
-    def redraw_window():
-        WIN.blit(BG,(0,0))
-        # pg.draw.line(WIN, RED, (0,HEIGHT-10), (WIDTH, HEIGHT-10))
-        pg.draw.rect(WIN, RED, rect)
-        player.move(moving_left,moving_right)
-        player.draw(WIN)
-        #Draw Items
-        item_boxes_group.update()
-        item_boxes_group.draw(WIN)
-        #Draw collected items
-        item_x = 150
-        item_y = 100
-        draw_text(WIN)
-        for item in COLLECTED_ITEMS:
-            WIN.blit(pg.transform.scale(item.image, (30,30)), (item_x, item_y))
-            item_x += 40
-        #cleanObjects
-        pg.display.update()
-
-    while run:
-        clock.tick(FPS)
-
-        redraw_window()
-
-        # userInput = pg.key.get_pressed()
-        
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                run = False
-
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    moving_left = True
-                if event.key == pg.K_RIGHT:
-                    moving_right = True
-                if event.key == pg.K_SPACE and player.is_landing == False:
-                    player.jump = True
-
-            if event.type == pg.KEYUP:
-                if event.key == pg.K_LEFT:
-                    moving_left = False
-                if event.key == pg.K_RIGHT:
-                    moving_right = False
-        
-        tick(player, item_boxes_group)
-        scroll(player,item_boxes_group,rect)
-
-        # if userInput[pg.K_LEFT]:
-        #     moving_left = True
-        # if userInput[pg.K_RIGHT]:
-        #     moving_right = True
-        # if userInput[pg.K_SPACE]:
-        #     player.jump = True
-        
+from config import GameConfig, PlayerConfig, BACKGROUND, RED, ActionType
+from sprites import Player
+from world import World
 
 
-main()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class GameManager:
+    def __init__(self):
+        logger.info("Initializing GameManager")
+        self.screen = pygame.display.set_mode((GameConfig.width, GameConfig.height))
+        self.clock = pygame.time.Clock()
+        pygame.display.set_caption(GameConfig.name)
+        self.player = Player(
+            x=PlayerConfig.x0,
+            y=GameConfig.height - PlayerConfig.height,
+            sprite_dir=PlayerConfig.sprite_dir,
+            scale=PlayerConfig.scale,
+            speed=PlayerConfig.speed,
+            y_speed=PlayerConfig.y_speed,
+        )
+        self.world = World()
+        self.world.load_level(1)
+        self.is_running = False
+        self.screen_offset = 0
+
+    def redraw(self):
+        self.screen.blit(BACKGROUND, (0, 0))
+        self.world.draw(self.screen, self.screen_offset)
+        pygame.draw.line(
+            self.screen, RED, (0, GameConfig.height - 10), (GameConfig.width, GameConfig.height - 10))
+        pygame.draw.rect(
+            self.screen, RED, (600, GameConfig.height - 200, 200, 50))
+        self.player.move()
+        self.player.draw(self.screen)
+        pygame.display.update()
+
+    def loop(self) -> bool:
+        is_running = True
+        self.clock.tick(GameConfig.fps)
+        self.world.handle_player_item_overlap(self.player)
+        self.redraw()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                is_running = False
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.player.start_action(ActionType.MOVE_LEFT)
+                if event.key == pygame.K_RIGHT:
+                    self.player.start_action(ActionType.MOVE_RIGHT)
+                if event.key == pygame.K_SPACE:
+                    self.player.start_action(ActionType.JUMP)
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    self.player.stop_action(ActionType.MOVE_LEFT)
+                if event.key == pygame.K_RIGHT:
+                    self.player.stop_action(ActionType.MOVE_RIGHT)
+        return is_running
+
+
+if __name__ == "__main__":
+    game_manager = GameManager()
+    logger.info("Starting game loop")
+    is_running = True
+    while is_running:
+        is_running = game_manager.loop()
