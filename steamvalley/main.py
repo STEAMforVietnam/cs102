@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 class GameManager:
     def __init__(self):
         logger.info("Initializing GameManager")
+        self.is_running = False
         self.screen = pygame.display.set_mode((GameConfig.width, GameConfig.height))
         self.clock = pygame.time.Clock()
         pygame.display.set_caption(GameConfig.name)
@@ -26,17 +27,11 @@ class GameManager:
         )
         self.world = World()
         self.world.load_level(1)
-        self.is_running = False
-        self.screen_offset = 0
 
     def redraw(self):
         self.screen.blit(BACKGROUND, (0, 0))
-        self.world.draw(self.screen, self.screen_offset)
-        pygame.draw.line(
-            self.screen, RED, (0, GameConfig.height - 10), (GameConfig.width, GameConfig.height - 10))
-        pygame.draw.rect(
-            self.screen, RED, (600, GameConfig.height - 200, 200, 50))
-        self.player.move()
+        screen_offset = self.player.move(self.world.abs_screen_offset)
+        self.world.draw(self.screen, screen_offset)
         self.player.draw(self.screen)
         pygame.display.update()
 
@@ -51,17 +46,17 @@ class GameManager:
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.player.start_action(ActionType.MOVE_LEFT)
+                    self.player.start_state(ActionType.MOVE_LEFT)
                 if event.key == pygame.K_RIGHT:
-                    self.player.start_action(ActionType.MOVE_RIGHT)
+                    self.player.start_state(ActionType.MOVE_RIGHT)
                 if event.key == pygame.K_SPACE:
-                    self.player.start_action(ActionType.JUMP)
+                    self.player.start_state(ActionType.JUMP)
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
-                    self.player.stop_action(ActionType.MOVE_LEFT)
+                    self.player.end_state(ActionType.MOVE_LEFT)
                 if event.key == pygame.K_RIGHT:
-                    self.player.stop_action(ActionType.MOVE_RIGHT)
+                    self.player.end_state(ActionType.MOVE_RIGHT)
         return is_running
 
 

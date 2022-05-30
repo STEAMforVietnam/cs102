@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pygame
 
-from config import ActionType, GameConfig, PlayerConfig
+from config import ActionType, PlayerConfig
 from sprites.base_sprite import BaseSprite
 
 
@@ -44,12 +44,6 @@ class MovableSprite(BaseSprite):
             self.animation_time = pygame.time.get_ticks()
             self.sprite_index = (self.sprite_index + 1) % len(self.sprites[self.action])
 
-    def _previous_coordinate(self, x, y):
-        self.pre_x, self.pre_y = x, y
-
-    def _is_standing(self):
-        return self.pre_x == self.rect.x and self.pre_y == self.rect.y
-
     def _set_action(self, new_action):
         if self.action != new_action:
             self.action = new_action
@@ -59,7 +53,7 @@ class MovableSprite(BaseSprite):
         self._update_sprite()
         window.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
-    def start_action(self, action):
+    def start_state(self, action: ActionType):
         if action == ActionType.MOVE_LEFT:
             self.moving_left = True
         elif action == ActionType.MOVE_RIGHT:
@@ -67,48 +61,10 @@ class MovableSprite(BaseSprite):
         elif action == ActionType.JUMP:
             self.jumping = True
 
-    def stop_action(self, action):
+    def end_state(self, action: ActionType):
         if action == ActionType.MOVE_LEFT:
             self.moving_left = False
         elif action == ActionType.MOVE_RIGHT:
             self.moving_right = False
+        self._set_action(ActionType.IDLE)
 
-    def move(self):
-        dx = 0
-        dy = 0
-        if self.moving_left:
-            dx = -self.speed
-            self._set_action(ActionType.MOVE_LEFT)
-            self.flip = True
-
-        if self.moving_right:
-            dx = self.speed
-            self._set_action(ActionType.MOVE_RIGHT)
-            self.flip = False
-
-        if self.is_landing:
-            self._set_action(ActionType.JUMP)
-
-        if self.jumping and not self.is_landing:
-            self.jump_velocity += self.y_speed
-            self.jumping = False
-            self.is_landing = True
-
-        self.jump_velocity += GameConfig.gravity
-        dy += self.jump_velocity
-
-        if self.rect.bottom + dy > GameConfig.height - 10:
-            dy = GameConfig.height - 10 - self.rect.bottom
-            self.jump_velocity = 0
-            self.is_landing = False
-
-        elif self.rect.bottom + dy > GameConfig.height - 200 and self.rect.left < 800 and self.rect.right > 600:
-            dy = GameConfig.height - 200 - self.rect.bottom
-            self.jump_velocity = 0
-            self.is_landing = False
-
-        if self._is_standing():
-            self._set_action(ActionType.IDLE)
-        self._previous_coordinate(self.rect.x, self.rect.y)
-        self.rect.x += dx
-        self.rect.y += dy
