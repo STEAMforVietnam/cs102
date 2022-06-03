@@ -2,11 +2,17 @@ import pygame
 
 
 class BaseSprite(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, x: int, y: int, image: pygame.Surface):
         super().__init__()
         self.last_animation_ms = pygame.time.get_ticks()
-        self.flip = False
-        self.is_landing = True
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        # self.mask = pygame.mask.from_surface(self.image)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
     def is_overlap(self, other_sprite):
         offset_x = self.rect.center[0] - other_sprite.rect.center[0]

@@ -68,7 +68,7 @@ class TileType(enum.Enum):
 OBSTACLES_TILE_TYPES = (TileType.GROUND,)
 
 
-def load_tile_img(path):
+def load_tile_img(path) -> pygame.Surface:
   img = pygame.image.load(path)
   img = pygame.transform.scale(img, (GameConfig.tile_size, GameConfig.tile_size))
   return img

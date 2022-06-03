@@ -2,29 +2,25 @@ from pathlib import Path
 
 import pygame
 
-from config import ActionType, PlayerConfig
+from config import ActionType
 from sprites.base_sprite import BaseSprite
 
 
 class MovableSprite(BaseSprite):
     def __init__(self, x, y, sprite_dir, scale, animation_interval_ms, speed=0, y_speed=0):
-        super().__init__()
         self._load_sprites(sprite_dir, scale)
         self.action = ActionType.IDLE
         self.sprite_index = 0
+        init_image = self.sprites[self.action][self.sprite_index]
+        super().__init__(x, y, init_image)
+
         self.speed = speed
         self.y_speed = y_speed
         self.moving_left = False
         self.moving_right = False
         self.jumping = False
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.flip = False
         self.animation_interval_ms = animation_interval_ms
-
-    @property
-    def image(self):
-        return self.sprites[self.action][self.sprite_index]
 
     def _load_sprites(self, sprites_dir, scale):
         self.sprites = {}
@@ -45,6 +41,7 @@ class MovableSprite(BaseSprite):
         if current_ms - self.last_animation_ms > self.animation_interval_ms:
             self.last_animation_ms = current_ms
             self.sprite_index = (self.sprite_index + 1) % len(self.sprites[self.action])
+        self.image = self.sprites[self.action][self.sprite_index]
 
     def _set_action(self, new_action):
         if self.action != new_action:
@@ -69,4 +66,3 @@ class MovableSprite(BaseSprite):
         elif action == ActionType.MOVE_RIGHT:
             self.moving_right = False
         self._set_action(ActionType.IDLE)
-

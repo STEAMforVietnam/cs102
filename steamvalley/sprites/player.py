@@ -6,9 +6,7 @@ class Player(MovableSprite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.jump_velocity = 0
-
-    def draw(self, window):
-        super().draw(window)
+        self.is_landing = True
 
     def move(self, abs_screen_offset):
         dx = 0
