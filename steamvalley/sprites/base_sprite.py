@@ -9,12 +9,13 @@ class BaseSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        # self.mask = pygame.mask.from_surface(self.image)
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+    def draw(self, screen, x_y=None, scale=None):
+        if x_y is None:
+            x_y = (self.rect.x, self.rect.y)
 
-    def is_overlap(self, other_sprite):
-        offset_x = self.rect.center[0] - other_sprite.rect.center[0]
-        offset_y = self.rect.center[1] - other_sprite.rect.center[1]
-        return self.mask.overlap(other_sprite.mask, (offset_x, offset_y))
+        image = self.image
+        if scale is not None:
+            image = pygame.transform.scale(image, scale)
+
+        screen.blit(image, x_y)

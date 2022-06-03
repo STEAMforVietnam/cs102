@@ -9,9 +9,6 @@ import os
 pygame.init()
 
 
-RED = (255, 0, 0)
-
-
 class GameConfig:
     name: str = "Steam Valley"
     fps: int = 60
@@ -30,6 +27,7 @@ class Font(enum.Enum):
     FREESANSBOLD_24 = pygame.font.Font("freesansbold.ttf", 24)
 
 
+RED = (255, 0, 0)
 INVENTORY_TEXT = (Font.FREESANSBOLD_24.value.render("Inventory", True, RED), (20, 30))
 
 
@@ -62,10 +60,12 @@ class TileType(enum.Enum):
     EMPTY = 0
     GROUND = 1
     HEART = 2
-    SHADOW = 3
+    CANDY = 3
+    SHADOW = 9
 
 
 OBSTACLES_TILE_TYPES = (TileType.GROUND,)
+COLLECTABLE_TILE_TYPES = (TileType.HEART, TileType.CANDY)
 
 
 def load_tile_img(path) -> pygame.Surface:

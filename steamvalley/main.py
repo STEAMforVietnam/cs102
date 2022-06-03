@@ -1,8 +1,8 @@
 import logging
 import pygame
 
-from config import GameConfig, PlayerConfig, BACKGROUND, RED, ActionType
-from sprites import Player
+from config import GameConfig, PlayerConfig, BACKGROUND, ActionType
+from sprites.player import Player
 from world import World
 
 
@@ -31,7 +31,8 @@ class GameManager:
 
     def redraw(self):
         self.screen.blit(BACKGROUND, (0, 0))
-        screen_offset = self.player.move(self.world.abs_screen_offset)
+        self.player.interact_items(self.world)
+        screen_offset = self.player.move(self.world)
         self.world.draw(self.screen, screen_offset)
         self.player.draw(self.screen)
         pygame.display.update()
