@@ -1,2 +1,2 @@
 from sprites.player import Player
-from sprites.item import CollectableItem
+from sprites.movable_sprite import MovableSprite

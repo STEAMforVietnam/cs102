@@ -2,13 +2,9 @@ import pygame
 
 
 class BaseSprite(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self):
         super().__init__()
-        self.jump_velocity = 0
-        self.jumping = False
-        self.pre_x = x
-        self.pre_y = y
-        self.animation_time = pygame.time.get_ticks()
+        self.last_animation_ms = pygame.time.get_ticks()
         self.flip = False
         self.is_landing = True
 

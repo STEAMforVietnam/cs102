@@ -7,8 +7,8 @@ from sprites.base_sprite import BaseSprite
 
 
 class MovableSprite(BaseSprite):
-    def __init__(self, x, y, sprite_dir, scale, speed, y_speed=0):
-        super().__init__(x, y)
+    def __init__(self, x, y, sprite_dir, scale, animation_interval_ms, speed=0, y_speed=0):
+        super().__init__()
         self._load_sprites(sprite_dir, scale)
         self.action = ActionType.IDLE
         self.sprite_index = 0
@@ -20,6 +20,7 @@ class MovableSprite(BaseSprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        self.animation_interval_ms = animation_interval_ms
 
     @property
     def image(self):
@@ -40,8 +41,9 @@ class MovableSprite(BaseSprite):
                 self.sprites[ActionType(sprite_subdir.name)] = action_sprites
 
     def _update_sprite(self):
-        if pygame.time.get_ticks() - self.animation_time > PlayerConfig.animation_time:
-            self.animation_time = pygame.time.get_ticks()
+        current_ms = pygame.time.get_ticks()
+        if current_ms - self.last_animation_ms > self.animation_interval_ms:
+            self.last_animation_ms = current_ms
             self.sprite_index = (self.sprite_index + 1) % len(self.sprites[self.action])
 
     def _set_action(self, new_action):
@@ -49,9 +51,9 @@ class MovableSprite(BaseSprite):
             self.action = new_action
             self.sprite_index = 0
 
-    def draw(self, window):
+    def draw(self, screen):
         self._update_sprite()
-        window.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
+        screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
     def start_state(self, action: ActionType):
         if action == ActionType.MOVE_LEFT:

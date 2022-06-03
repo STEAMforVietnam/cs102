@@ -24,6 +24,7 @@ class GameManager:
             scale=PlayerConfig.scale,
             speed=PlayerConfig.speed,
             y_speed=PlayerConfig.y_speed,
+            animation_interval_ms=PlayerConfig.animation_interval_ms,
         )
         self.world = World()
         self.world.load_level(1)
@@ -38,7 +39,6 @@ class GameManager:
     def loop(self) -> bool:
         is_running = True
         self.clock.tick(GameConfig.fps)
-        self.world.handle_player_item_overlap(self.player)
         self.redraw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
