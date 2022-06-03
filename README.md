@@ -1,6 +1,10 @@
 # steamvalley
 Python game for CS 102
 
+Game assets lấy từ: https://drive.google.com/drive/folders/10rFPJOfM5l65yLDjWa3o1H71gn5HcTY5
+
+Internal CS 102 materials: https://coda.io/d/CS102-Masterplan_d9KVVJ8s4Bb/
+
 # Structure
 
 * Dung 1 repo cho nhieu games trong qua trinh thu nghiem, cac ban bat dau viet thu game thi hay tao moi game 1 folder roi thoai mai push code len `master` branch.
