@@ -2,17 +2,18 @@ from pathlib import Path
 
 import pygame
 
+import util
 from config import ActionType
 from sprites.base_sprite import BaseSprite
 
 
 class MovableSprite(BaseSprite):
-    def __init__(self, x, y, sprite_dir, scale, animation_interval_ms, speed=0, y_speed=0):
-        self._load_sprites(sprite_dir, scale)
+    def __init__(self, x, y, scale, sprite_dir, animation_interval_ms, speed=0, y_speed=0, *args, **kwargs):
+        self.sprites = self._load_sprites(sprite_dir, scale)
         self.action = ActionType.IDLE
         self.sprite_index = 0
         init_image = self.sprites[self.action][self.sprite_index]
-        super().__init__(x, y, init_image)
+        super().__init__(x, y, init_image, *args, **kwargs)
 
         self.speed = speed
         self.y_speed = y_speed
@@ -22,19 +23,20 @@ class MovableSprite(BaseSprite):
         self.flip = False
         self.animation_interval_ms = animation_interval_ms
 
-    def _load_sprites(self, sprites_dir, scale):
-        self.sprites = {}
+    @staticmethod
+    def _load_sprites(sprites_dir, scale):
+        sprites = {}
         for sprite_subdir in Path(sprites_dir).iterdir():
             action_sprites = []
             for image_file in sprite_subdir.iterdir():
-                img = pygame.image.load(str(image_file))
-                action_sprites.append(
-                    pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale))))
+                image = pygame.image.load(str(image_file))
+                action_sprites.append(util.scale_image(image, scale))
             if sprite_subdir.name == "move":
-                self.sprites[ActionType.MOVE_LEFT] = action_sprites
-                self.sprites[ActionType.MOVE_RIGHT] = action_sprites
+                sprites[ActionType.MOVE_LEFT] = action_sprites
+                sprites[ActionType.MOVE_RIGHT] = action_sprites
             else:
-                self.sprites[ActionType(sprite_subdir.name)] = action_sprites
+                sprites[ActionType(sprite_subdir.name)] = action_sprites
+        return sprites
 
     def _update_sprite(self):
         current_ms = pygame.time.get_ticks()

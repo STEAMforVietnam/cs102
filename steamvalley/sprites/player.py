@@ -1,17 +1,36 @@
+import logging
+from typing import Optional
+
 import pygame
 from pygame.sprite import collide_mask
 
-from config import ActionType, GameConfig, INVENTORY_TEXT
+import util
+from config import ActionType, GameConfig, INVENTORY_TEXT, Font, Color
+from sprites.base_sprite import BaseSprite
 from sprites.movable_sprite import MovableSprite
-from world import World, Tile
+from sprites.npc import Npc
+from world import World
 
 
 class Player(MovableSprite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.jump_velocity = 0
         self.in_air = False
+        self.npc_near_by: Optional[Npc] = None
         self._inventory = []
+
+        self.reset_dialogue()
+
+        # TODO: move somewhere else
+        self.dialogue = [
+            ("Co Thao", "Xin chao"),
+            ("Tay May", "Xin chao co"),
+        ]
+
+    def reset_dialogue(self):
+        self._dialogue_text = None
+        self._dialogue_index = -1
 
     def _get_dx_dy_unobstructed(self):
         dx = 0
@@ -36,8 +55,7 @@ class Player(MovableSprite):
         return dx, dy
 
     def _get_dx_dy_in_world(self, dx, dy, world: World):
-        for tile in world.get_obstacle_tiles():
-            obstacle = tile.sprite
+        for obstacle in world.get_obstacles():
             if obstacle.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height):
                 dx = 0
             if obstacle.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
@@ -51,6 +69,8 @@ class Player(MovableSprite):
         return dx, dy
 
     def move(self, world: World):
+        if self._dialogue_text is not None:
+            return 0
         dx, dy = self._get_dx_dy_unobstructed()
         dx, dy = self._get_dx_dy_in_world(dx, dy, world)
 
@@ -79,22 +99,44 @@ class Player(MovableSprite):
             screen_offset = -world.abs_screen_offset
         return screen_offset
 
-    def collect(self, tile: Tile):
+    def collect(self, tile: BaseSprite):
         self._inventory.append(tile)
 
-    def interact_items(self, world: World):
+    def interact(self, world: World):
         for tile in world.get_collectable_tiles():
-            if collide_mask(self, tile.sprite):
+            if collide_mask(self, tile):
                 world.remove_tile(tile.id)
                 self.collect(tile)
+        self.update_npc_near_by(world)
+
+    def update_npc_near_by(self, world: World):
+        # Assume no 2 or more NPCs are next to one another
+        self.npc_near_by = None
+        for npc_id in world.get_npc_ids():
+            npc = world.tiles[npc_id]
+            if collide_mask(self, npc):
+                self.npc_near_by = npc
+                npc.is_near_player = True
+            else:
+                npc.is_near_player = False
+
+    def handle_special_interaction(self, screen):
+        logging.info(f"handle_special_interaction - self.npc_near_by: {self.npc_near_by}")
+        if not self.npc_near_by or not self.npc_near_by.has_quest():
+            return
+        # Continue dialogue with NPC
+        self._dialogue_text = self.npc_near_by.get_next_line()
 
     def draw(self, screen):
         super().draw(screen)
+        if self._dialogue_text:
+            util.draw_dialogue_box(screen)
+            util.draw_dialogue_text(screen, self._dialogue_text)
 
         # Draw Inventory on top left corner
         screen.blit(*INVENTORY_TEXT)
         item_x, item_y = INVENTORY_TEXT[1]
         item_x += 120
         for item in self._inventory:
-            item.sprite.draw(screen, x_y=(item_x, item_y), scale=(30, 30))
+            item.draw(screen, x_y=(item_x, item_y), scale=.5)
             item_x += 40

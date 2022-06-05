@@ -31,7 +31,7 @@ class GameManager:
 
     def redraw(self):
         self.screen.blit(BACKGROUND, (0, 0))
-        self.player.interact_items(self.world)
+        self.player.interact(self.world)
         screen_offset = self.player.move(self.world)
         self.world.draw(self.screen, screen_offset)
         self.player.draw(self.screen)
@@ -58,6 +58,9 @@ class GameManager:
                     self.player.end_state(ActionType.MOVE_LEFT)
                 if event.key == pygame.K_RIGHT:
                     self.player.end_state(ActionType.MOVE_RIGHT)
+                if event.key == pygame.K_RETURN:
+                    logging.info(f"KEYUP: K_RETURN")
+                    self.player.handle_special_interaction(self.screen)
         return is_running
 
 

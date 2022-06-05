@@ -1,0 +1,32 @@
+{
+  "Cô Nga": [
+    [
+      {
+        "Subject": "Cô Nga",
+        "Line": "Xin chào em! Em tên là gì?"
+      },
+      {
+        "Subject": "{player_name}",
+        "Line": "Xin chào cô! Em tên là {player_name}. Em là thực tập sinh mới ạ."
+      },
+      {
+        "Subject": "Cô Nga",
+        "Line": "Ồ, tốt quá. Em có thể nhặt hộ cô những viên kẹo bị đánh rơi được không?"
+      },
+      {
+        "Subject": "{player_name}",
+        "Line": "Được ạ!"
+      }
+    ],
+    [
+      {
+        "Subject": "Cô Nga",
+        "Line": "Em gom được hết kẹo chưa?"
+      }
+    ]
+  ],
+  "Chú Nam": [
+  ]
+}
+
+
