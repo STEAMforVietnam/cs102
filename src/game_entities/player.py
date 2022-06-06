@@ -1,7 +1,6 @@
 import pygame
-from common.types import ActionType
-from config import GameConfig
 
+from common.types import ActionType
 from game_entities.movable_entity import MovableEntity
 
 

@@ -1,15 +1,14 @@
 import logging
 from typing import Optional
 
-import pygame
-from pygame.sprite import collide_mask
-
 import util
-from config import ActionType, GameConfig, INVENTORY_TEXT, Font, Color
+from pygame.sprite import collide_mask
 from sprites.base_sprite import BaseSprite
 from sprites.movable_sprite import MovableSprite
 from sprites.npc import Npc
 from world import World
+
+from config import INVENTORY_TEXT, ActionType, GameConfig
 
 
 class Player(MovableSprite):
@@ -56,16 +55,22 @@ class Player(MovableSprite):
 
     def _get_dx_dy_in_world(self, dx, dy, world: World):
         for obstacle in world.get_obstacles():
-            if obstacle.rect.colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height):
+            if obstacle.rect.colliderect(
+                self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height
+            ):
                 dx = 0
-            if obstacle.rect.colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
+            if obstacle.rect.colliderect(
+                self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height
+            ):
                 if self.jump_velocity < 0:
                     self.jump_velocity = 0
-                    dy = obstacle.rect.bottom - self.rect.top  # the gap between player's head and obstacle above
+                    # the gap between player's head and obstacle above
+                    dy = obstacle.rect.bottom - self.rect.top
                 else:
                     self.jump_velocity = 0
                     self.in_air = False
-                    dy = obstacle.rect.top - self.rect.bottom  # the gap between player's feet and ground
+                    # the gap between player's feet and ground
+                    dy = obstacle.rect.top - self.rect.bottom
         return dx, dy
 
     def move(self, world: World):
@@ -138,5 +143,5 @@ class Player(MovableSprite):
         item_x, item_y = INVENTORY_TEXT[1]
         item_x += 120
         for item in self._inventory:
-            item.draw(screen, x_y=(item_x, item_y), scale=.5)
+            item.draw(screen, x_y=(item_x, item_y), scale=0.5)
             item_x += 40

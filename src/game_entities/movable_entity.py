@@ -1,7 +1,6 @@
 import logging
 
 from config import GameConfig
-
 from game_entities.animated_entity import AnimatedEntity
 
 logging.basicConfig(level=logging.INFO)
@@ -39,7 +38,7 @@ class MovableEntity(AnimatedEntity):
     def update(self):
         self.dx = 0
         if self.moving_left:
-            self.dx = - self.speed
+            self.dx = -self.speed
         elif self.moving_right:
             self.dx = self.speed
         new_x = self.rect.x + self.dx

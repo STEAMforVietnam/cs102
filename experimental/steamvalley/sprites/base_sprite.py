@@ -10,6 +10,7 @@ class BaseSprite(pygame.sprite.Sprite):
     """
     Base class for visible game objects.
     """
+
     gen_id = itertools.count()
 
     def __init__(self, x: int, y: int, image: pygame.Surface, object_type=None):

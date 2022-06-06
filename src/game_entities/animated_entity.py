@@ -6,7 +6,6 @@ import pygame
 
 from common import util
 from common.types import ActionType
-
 from game_entities.base_entity import BaseEntity
 
 logging.basicConfig(level=logging.INFO)
@@ -15,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 class AnimatedEntity(BaseEntity):
     """
-    For animated entities. Animation done by looping through a sequence of images loaded from `sprites_dir`.
+    For animated entities.
+    Animation done by looping through a sequence of images loaded from `sprites_dir`.
     """
 
     def __init__(
@@ -29,7 +29,9 @@ class AnimatedEntity(BaseEntity):
         flip_x: bool = False,
     ) -> None:
         # Load Sprites
-        self.sprites: Dict[ActionType, List[pygame.Surface]] = self._load_sprites(sprites_dir, scale)
+        self.sprites: Dict[ActionType, List[pygame.Surface]] = self._load_sprites(
+            sprites_dir, scale
+        )
 
         # Tracking the states of this subject
         self.action: ActionType = default_action
@@ -43,7 +45,8 @@ class AnimatedEntity(BaseEntity):
 
         super().__init__(x, y, image)
 
-        self.animation_interval_ms: int = animation_interval_ms  # minimal time until switching to next sprite
+        # minimal time until switching to next sprite
+        self.animation_interval_ms: int = animation_interval_ms
         self.last_animation_ms: int = 0
 
     def update(self) -> None:
@@ -74,8 +77,7 @@ class AnimatedEntity(BaseEntity):
 
     @staticmethod
     def _load_sprites(
-        sprites_dir: str,
-        scale: float = 0.1
+        sprites_dir: str, scale: float = 0.1
     ) -> Dict[ActionType, List[pygame.Surface]]:
         """
         Load all images from directory and convert into a Dictionary
@@ -88,7 +90,9 @@ class AnimatedEntity(BaseEntity):
             try:
                 action_type: ActionType = ActionType(sprite_subdir.name)
             except ValueError as e:
-                logger.warning(f"Unrecognized ActionType when loading from sprites_dir '{sprites_dir}': {e}")
+                logger.warning(
+                    f"Unrecognized ActionType when loading from sprites_dir '{sprites_dir}': {e}"
+                )
                 continue
 
             # Read list of images & create list of sprites

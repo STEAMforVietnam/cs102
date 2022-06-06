@@ -37,12 +37,15 @@ class Npc(BaseSprite):
     def _highlight(self, screen):
         if not self._question_mark:
             self._question_mark = BaseSprite(
-                x=self.rect.x + ((self.image.get_width() - IMG_QUESTION_MARK.get_width()) // 2),
+                x=self.rect.x
+                + ((self.image.get_width() - IMG_QUESTION_MARK.get_width()) // 2),
                 y=self.rect.y - 60,
                 image=IMG_QUESTION_MARK,
             )
         # the world may have scrolled, so we need to recalculate x coordinate
-        self._question_mark.rect.x = self.rect.x + ((self.image.get_width() - IMG_QUESTION_MARK.get_width()) // 2)
+        self._question_mark.rect.x = self.rect.x + (
+            (self.image.get_width() - IMG_QUESTION_MARK.get_width()) // 2
+        )
         self._question_mark.draw(screen)
         self.image.set_alpha(255)
 

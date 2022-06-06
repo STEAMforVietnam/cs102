@@ -52,7 +52,10 @@ class Color:
     TEXT_DIALOGUE = (204, 115, 14)
 
 
-INVENTORY_TEXT = (Font.FREESANSBOLD_24.value.render("Inventory", True, Color.RED), (20, 30))
+INVENTORY_TEXT = (
+    Font.FREESANSBOLD_24.value.render("Inventory", True, Color.RED),
+    (20, 30),
+)
 
 
 class PlayerConfig:
@@ -114,13 +117,14 @@ def load_tile_img(tile_type: TileType) -> Optional[pygame.Surface]:
     path = f"assets/tiles/{tile_type.name.lower()}.png"
     image = pygame.image.load(path)
     if tile_type.value < 20:
-        image = pygame.transform.scale(image, (GameConfig.tile_size, GameConfig.tile_size))
+        image = pygame.transform.scale(
+            image, (GameConfig.tile_size, GameConfig.tile_size)
+        )
     return image
 
 
 TILE_IMGS: Dict[TileType, Optional[pygame.Surface]] = {
-    tile_type: load_tile_img(tile_type)
-    for tile_type in TileType
+    tile_type: load_tile_img(tile_type) for tile_type in TileType
 }
 
 
@@ -131,7 +135,11 @@ class LevelConfig:
     data: Optional[List] = None
 
     def __post_init__(self):
-        with open(os.path.join(self.data_dir, str(self.id) + ".csv"), newline="") as csvfile:
+        with open(
+            os.path.join(self.data_dir, str(self.id) + ".csv"), newline=""
+        ) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
-            self.data = [[TileType(int(tile or TileType.EMPTY.value)) for tile in row]
-                         for row in reader]
+            self.data = [
+                [TileType(int(tile or TileType.EMPTY.value)) for tile in row]
+                for row in reader
+            ]

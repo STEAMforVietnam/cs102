@@ -8,7 +8,18 @@ from sprites.base_sprite import BaseSprite
 
 
 class MovableSprite(BaseSprite):
-    def __init__(self, x, y, scale, sprite_dir, animation_interval_ms, speed=0, y_speed=0, *args, **kwargs):
+    def __init__(
+        self,
+        x,
+        y,
+        scale,
+        sprite_dir,
+        animation_interval_ms,
+        speed=0,
+        y_speed=0,
+        *args,
+        **kwargs
+    ):
         self.sprites = self._load_sprites(sprite_dir, scale)
         self.action = ActionType.IDLE
         self.sprite_index = 0

@@ -8,7 +8,9 @@ from config import Color, GameConfig, Font, IMG_BG_DIALOGUE_BOX
 def scale_image(image: pygame.Surface, scale: Optional[float] = None):
     if scale is None:
         return image
-    return pygame.transform.scale(image, (int(image.get_width() * scale), int(image.get_height() * scale)))
+    return pygame.transform.scale(
+        image, (int(image.get_width() * scale), int(image.get_height() * scale))
+    )
 
 
 def draw_dialogue_box(screen):
@@ -17,7 +19,10 @@ def draw_dialogue_box(screen):
     pygame.draw.rect(
         screen,
         Color.BG_DIALOGUE_BOX,
-        pygame.Rect(x, y, GameConfig.dialogue_box_width, GameConfig.dialogue_box_height))
+        pygame.Rect(
+            x, y, GameConfig.dialogue_box_width, GameConfig.dialogue_box_height
+        ),
+    )
     screen.blit(IMG_BG_DIALOGUE_BOX, (x - 110, y - 34))
 
 
