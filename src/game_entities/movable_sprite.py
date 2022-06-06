@@ -22,7 +22,7 @@ class MovableSprite(BaseSprite):
         """
         # Load Sprites
         self.sprites: Dict[ActionType, List[pygame.Surface]] = self._load_sprites(sprites_dir, scale)
-        
+
         # Set Default
         self.action: ActionType = default_action
         self.flip_x = flip_x

@@ -1,7 +1,6 @@
 import os
 
 import pygame
-from common.types import ActionType
 from config import GameConfig
 from game_entities.movable_sprite import MovableSprite
 from game_entities.player import Player

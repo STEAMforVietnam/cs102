@@ -13,11 +13,11 @@ class Player(MovableSprite):
         flip_x: bool = False
     ):
         super().__init__(
-            x= x,
-            y= y,
-            sprites_dir= "assets/player",
-            default_action= default_action,
-            flip_x= flip_x
+            x=x,
+            y=y,
+            sprites_dir="assets/player",
+            default_action=default_action,
+            flip_x=flip_x,
         )
         self.speed_x = 0
         self.speed_y = 0
@@ -33,10 +33,10 @@ class Player(MovableSprite):
             new_y = 200
             self.speed_y = 0
             self.is_landed = True
-        
+
         if not self.is_landed:
-            self.speed_y += 2 # gravity pulling down
-        
+            self.speed_y += 2  # gravity pulling down
+
         # X-axis obstacle check
         if new_x < 0:
             new_x = 0

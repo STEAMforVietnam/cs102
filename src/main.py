@@ -30,7 +30,7 @@ class GameManager:
 
             # Update Screen Display
             pygame.display.update()
-            
+
             # Regulate max frame rate
             self.clock.tick(GameConfig.FPS)
 
