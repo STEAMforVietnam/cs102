@@ -1,8 +1,5 @@
-import os
-
 import pygame
-from config import GameConfig
-from game_entities.movable_sprite import MovableSprite
+from config import GameConfig, PlayerConfig
 from game_entities.player import Player
 
 
@@ -10,23 +7,29 @@ class SceneOne:
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
         self.background = pygame.transform.scale(
-            pygame.image.load(os.path.join("assets", "bg_office.png")),
-            (GameConfig.WIDTH, GameConfig.HEIGHT)
+            pygame.image.load(GameConfig.SCENE_ONE_BG_IMG_PATH),
+            (GameConfig.WIDTH, GameConfig.HEIGHT),
         )
 
-        self.player = Player(10, 200)
-        self.shadow = MovableSprite(100, 10, "assets/shadow")
+        # TODO: load player position from level data
+        self.player = Player(
+            x=10,
+            y=200,
+            sprites_dir=PlayerConfig.SPRITES_DIR,
+            scale=PlayerConfig.SCALE,
+            speed=PlayerConfig.SPEED,
+            vertical_speed=PlayerConfig.VERTICAL_SPEED,
+            animation_interval_ms=PlayerConfig.ANIMATION_INTERVAL_MS,
+        )
 
     def tick(self) -> bool:
         self.screen.blit(self.background, (0, 0))
-        
+
         # Game logic
         self.player.update()
-        self.shadow.update()
 
         # Draw
         self.player.draw(self.screen)
-        self.shadow.draw(self.screen)
 
         return True
 

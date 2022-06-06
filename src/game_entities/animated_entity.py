@@ -1,42 +1,49 @@
+import logging
 from pathlib import Path
 from typing import Dict, List
 
 import pygame
+
+from common import util
 from common.types import ActionType
 
-from game_entities.base_sprite import BaseSprite
+from game_entities.base_entity import BaseEntity
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-class MovableSprite(BaseSprite):
+class AnimatedEntity(BaseEntity):
+    """
+    For animated entities. Animation done by looping through a sequence of images loaded from `sprites_dir`.
+    """
+
     def __init__(
         self,
         x: int,
         y: int,
         sprites_dir: str,
         default_action: ActionType = ActionType.IDLE,
-        scale: float = 0.1,
-        flip_x: bool = False
+        scale: float = 1.0,
+        animation_interval_ms: int = 80,
+        flip_x: bool = False,
     ) -> None:
-        """
-        For animated entity / sprite
-        """
         # Load Sprites
         self.sprites: Dict[ActionType, List[pygame.Surface]] = self._load_sprites(sprites_dir, scale)
 
-        # Set Default
+        # Tracking the states of this subject
         self.action: ActionType = default_action
-        self.flip_x = flip_x
+        self.flip_x = flip_x  # whether to flip the image horizontally
         self.sprite_index: int = 0
 
-        # BaseSprite constructor
-        init_image = self.sprites[self.action][self.sprite_index]
+        # Calling BaseSprite constructor
+        image = self.sprites[self.action][self.sprite_index]
         if self.flip_x:
-            init_image = pygame.transform.flip(init_image, True, False)
+            image = pygame.transform.flip(image, flip_x=True, flip_y=False)
 
-        super().__init__(x, y, init_image)
+        super().__init__(x, y, image)
 
-        # Store animation data
-        self.animation_interval_ms: int = 80
+        self.animation_interval_ms: int = animation_interval_ms  # minimal time until switching to next sprite
         self.last_animation_ms: int = 0
 
     def update(self) -> None:
@@ -61,13 +68,12 @@ class MovableSprite(BaseSprite):
 
     def set_action(self, new_action) -> None:
         if self.action != new_action:
-            print("Set action", new_action)
+            logger.debug(f"Set action {new_action}")
             self.action = new_action
             self.sprite_index = 0
 
-    # Private / Internal Methods
+    @staticmethod
     def _load_sprites(
-        self,
         sprites_dir: str,
         scale: float = 0.1
     ) -> Dict[ActionType, List[pygame.Surface]]:
@@ -79,21 +85,16 @@ class MovableSprite(BaseSprite):
 
         for sprite_subdir in Path(sprites_dir).iterdir():
             action_sprites: List[pygame.Surface] = []
-            # Note: this could fail due to .DS_Store on macOS
-            action_type: ActionType = ActionType(sprite_subdir.name)
+            try:
+                action_type: ActionType = ActionType(sprite_subdir.name)
+            except ValueError as e:
+                logger.warning(f"Unrecognized ActionType when loading from sprites_dir '{sprites_dir}': {e}")
+                continue
 
-            # Read list of images & create List of sprites
+            # Read list of images & create list of sprites
             for image_file in sprite_subdir.iterdir():
-                img = pygame.image.load(str(image_file))
-                action_sprites.append(
-                    pygame.transform.scale(
-                        img,
-                        (
-                            int(img.get_width() * scale),
-                            int(img.get_height() * scale)
-                        )
-                    )
-                )
+                image = pygame.image.load(str(image_file))
+                action_sprites.append(util.scale_image(image, scale))
 
             sprites[action_type] = action_sprites
         return sprites

@@ -1,6 +1,6 @@
 import pygame
 
-from scenes.scene_1 import SceneOne
+from scenes.scene_one import SceneOne
 
 
 class SceneManager:

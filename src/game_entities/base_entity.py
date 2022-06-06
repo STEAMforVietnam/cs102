@@ -3,7 +3,11 @@ from typing import Tuple
 import pygame
 
 
-class BaseSprite(pygame.sprite.Sprite):
+class BaseEntity(pygame.sprite.Sprite):
+    """
+    Base class for all game entities. This simply supports drawing a still image.
+    Most game entities will be objects of the child classes instead of using this class directly.
+    """
     def __init__(
         self,
         x: int,

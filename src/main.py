@@ -23,7 +23,7 @@ class GameManager:
         is_running = True
         while is_running:
             # Init screen
-            self.screen.fill(GameConfig.BLACK)
+            self.screen.fill(pygame.Color("black"))
 
             # Scene events
             is_running = self.scene_manager.tick()
