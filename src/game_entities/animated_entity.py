@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Dict, List
 
 import pygame
-
 from common import util
 from common.types import ActionType
 from game_entities.base_entity import BaseEntity

@@ -16,7 +16,7 @@ class MovableEntity(AnimatedEntity):
     def __init__(
         self,
         speed: int,
-        vertical_speed: int,
+        jump_vertical_speed: int,
         *args,
         **kwargs,
     ) -> None:
@@ -24,7 +24,7 @@ class MovableEntity(AnimatedEntity):
 
         # How fast this subject moves.
         self.speed: int = speed
-        self.vertical_speed: int = vertical_speed
+        self.jump_vertical_speed: int = jump_vertical_speed
 
         # Amount of delta (change) in position, along the 2 axis.
         self.dx: int = 0
@@ -33,33 +33,61 @@ class MovableEntity(AnimatedEntity):
         # Tracking the states of this subject
         self.moving_left: bool = False
         self.moving_right: bool = False
-        self.is_landed: bool = True
+        self.is_landed: bool = False  # Let object fall to stable position
 
-    def update(self):
-        self.dx = 0
+    def update(self, ground_tiles=[]):
+        # Calculate Ideal dx dy
+        dx = 0
+        dy = 0
+
         if self.moving_left:
-            self.dx = -self.speed
-        elif self.moving_right:
-            self.dx = self.speed
-        new_x = self.rect.x + self.dx
-        new_y = self.rect.y + self.dy
+            dx = -self.speed
 
-        # Y-axis obstacle check
-        if new_y > 200:
-            new_y = 200
+        if self.moving_right:
+            dx = self.speed
+
+        dy = self.dy + GameConfig.GRAVITY
+
+        # dx, dy in obstacle condition
+        for obstacle in ground_tiles:
+            if obstacle.rect.colliderect(
+                self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height
+            ):
+                dx = 0
+            if obstacle.rect.colliderect(
+                self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height
+            ):
+                if self.dy < 0:
+                    self.dy = 0
+                    dy = (
+                        obstacle.rect.bottom - self.rect.top
+                    )  # the gap between player's head and obstacle above
+                else:
+                    self.dy = 0
+                    self.is_landed = True
+                    dy = (
+                        obstacle.rect.top - self.rect.bottom
+                    )  # the gap between player's feet and ground
+
+        # Update position & speed state
+        self.rect.x += dx
+        self.rect.y += dy
+        self.dx = dx
+        self.dy = dy
+
+        # Restrict absolute world x, y coordinate
+        if self.rect.y > GameConfig.HEIGHT - self.rect.height:
+            self.rect.y = GameConfig.HEIGHT - self.rect.height
             self.dy = 0
             self.is_landed = True
 
-        if not self.is_landed:
-            self.dy += GameConfig.GRAVITY
-
-        # X-axis obstacle check
-        if new_x < 0:
-            new_x = 0
+        if self.rect.x < 0:
+            self.rect.x = 0
+            self.dx = 0
+        if self.rect.x > GameConfig.WIDTH - self.rect.width:
+            self.rect.x = GameConfig.WIDTH - self.rect.width
             self.dx = 0
 
-        self.rect.x = new_x
-        self.rect.y = new_y
         super().update()
 
     def move_left(self, enabled=True):
@@ -71,4 +99,4 @@ class MovableEntity(AnimatedEntity):
     def jump(self):
         if self.is_landed:
             self.is_landed = False
-            self.dy = -self.vertical_speed
+            self.dy = -self.jump_vertical_speed
