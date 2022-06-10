@@ -68,6 +68,7 @@ logger.info(...)
 logger.warning(...)
 ```
 
+
 ## Architecture
 
 The outer loop in `main.py` calls `self.scene_manager.tick()` every game tick.
@@ -79,3 +80,31 @@ events = pygame.event.get()
 ```
 
 These events are sent to game entities to handle in the `.update(events, world)` function. 
+
+
+## Story Design Guide
+
+### Game entity
+
+Game entities are every subject / object in the game: player, each enemy, NPCs, etc.
+
+### Scene data
+
+Scene data are in `.csv` files, which tells the game where each game entity is.
+
+### How to add a new NPC
+
+For example, we want to add `npc_co_nga.png`
+(this is for non-animated NPCs,
+ for animated NPCs, similar but slightly different - will discuss later)
+
+1. Add image to `assets/tiles/`
+2. Go to `common/types.py`, add a new enum to `TileType`, enum name is uppercase of image name: `NPC_CO_NGA`, enum value is an integer different from existing other TileType values
+3. Add NPC to `.csv`  at desired location.
+
+### Tips
+
+* Can modify player speed and other settings in `config.py`.
+* Basic interactions that can be included in the game story and quests: picking up items, dropping off items, open locked door with keys, etc.
+* For other custom interactions: discuss with team to get them implemented
+* You can use breakpoints and debug mode in Pycharm to debug
