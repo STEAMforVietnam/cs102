@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Sequence
 
+from common.event import GameEvent
 from config import GameConfig
 from game_entities.animated_entity import AnimatedEntity
 
@@ -42,7 +43,8 @@ class MovableEntity(AnimatedEntity):
         self.moving_right: bool = False
         self.is_landed: bool = False  # Let object fall to stable position
 
-    def update(self, world: Optional[World] = None) -> None:
+    def update(self, events: Sequence[GameEvent] = tuple(), world: Optional[World] = None) -> None:
+        super().update(events)
         # Knowing the current state of the subject, we calculate the amount of changes
         # - dx and dy - that should occur to the player position during this current game tick.
 
@@ -62,8 +64,6 @@ class MovableEntity(AnimatedEntity):
         self.rect.x += self.dx
         self.rect.y += self.dy
 
-        super().update()
-
     def move_left(self, enabled=True):
         self.moving_left = enabled
 
@@ -77,10 +77,11 @@ class MovableEntity(AnimatedEntity):
 
     def _update_dx_dy_based_on_obstacles(self, obstacles):
         """
-        Knowing the position of all obstacle and the would be position of this subject
-        (self.rect.x + self.dx, self.rect.y + self.dy), check if the would be position
-        is colliding with any of the obstacles. If collision happens, restrict the movement
-        by modifying self.dx and(or) self.dy.
+        Knowing the positions of all obstacles and the would-be position of this subject
+        (self.rect.x + self.dx, self.rect.y + self.dy), check if the would-be position
+        is colliding with any of the obstacles.
+
+        If collision happens, restrict the movement by modifying self.dx and(or) self.dy.
         """
         for obstacle in obstacles:
             if obstacle.rect.colliderect(

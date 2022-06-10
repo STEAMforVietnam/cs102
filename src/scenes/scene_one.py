@@ -1,17 +1,21 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Sequence
 
 import pygame
 
+from common.event import GameEvent
 from common.types import TileType
 from common.util import load_tile_img
 from config import GameConfig, PlayerConfig
 from game_entities.player import Player
 from game_entities.world import World
+from scenes.base_scene import BaseScene
 
 
-class SceneOne:
+class SceneOne(BaseScene):
+    """First playing scene in the game."""
+
     def __init__(self, screen: pygame.Surface) -> None:
-        self.screen = screen
+        super().__init__(screen)
         self.background = pygame.transform.scale(
             pygame.image.load(GameConfig.SCENE_ONE_BG_IMG_PATH),
             (GameConfig.WIDTH, GameConfig.HEIGHT),
@@ -36,29 +40,15 @@ class SceneOne:
             animation_interval_ms=PlayerConfig.ANIMATION_INTERVAL_MS,
         )
 
-    def tick(self) -> bool:
+    def tick(self, events: Sequence[GameEvent]) -> bool:
         self.screen.blit(self.background, (0, 0))
 
         # Game logic
-        self.world.update()
-        self.player.update(self.world)
+        self.world.update(events)
+        self.player.update(events, self.world)
 
         # Draw
         self.world.draw(self.screen)
-        self.player.draw(self.screen, debug=True)
+        self.player.draw(self.screen)
 
         return True
-
-    def event_keydown(self, key: int):
-        if key == pygame.K_LEFT or key == pygame.K_a:
-            self.player.move_left(True)
-        elif key == pygame.K_RIGHT or key == pygame.K_d:
-            self.player.move_right(True)
-        elif key == pygame.K_UP or key == pygame.K_SPACE or key == pygame.K_w:
-            self.player.jump()
-
-    def event_keyup(self, key: int):
-        if key == pygame.K_LEFT or key == pygame.K_a:
-            self.player.move_left(False)
-        elif key == pygame.K_RIGHT or key == pygame.K_d:
-            self.player.move_right(False)

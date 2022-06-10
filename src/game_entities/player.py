@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, Sequence
 
 import pygame
 
+from common.event import GameEvent
 from common.types import ActionType
 from config import GameConfig
 from game_entities.movable_entity import MovableEntity
@@ -13,8 +14,25 @@ class Player(MovableEntity):
     Extra logics to MovableEntity specific to Player (the user-controllable character).
     """
 
-    def update(self, world: Optional[World] = None) -> None:
-        super().update(world)
+    def _handle_events(self, events: Sequence[GameEvent]):
+        """
+        This subject is controllable by user, we ask it to move based on keyboard inputs here.
+        """
+        for event in events:
+            if event.is_key_down(pygame.K_LEFT, pygame.K_a):
+                self.move_left(True)
+            elif event.is_key_down(pygame.K_RIGHT, pygame.K_d):
+                self.move_right(True)
+            elif event.is_key_down(pygame.K_UP, pygame.K_SPACE, pygame.K_w):
+                self.jump()
+            elif event.is_key_up(pygame.K_LEFT, pygame.K_a):
+                self.move_left(False)
+            elif event.is_key_up(pygame.K_RIGHT, pygame.K_d):
+                self.move_right(False)
+
+    def update(self, events: Sequence[GameEvent] = tuple(), world: Optional[World] = None) -> None:
+        super().update(events, world)
+        self._handle_events(events)
 
         # Horizontal world scroll based on player movement
         delta_screen_offset = 0
@@ -36,7 +54,7 @@ class Player(MovableEntity):
 
         world.update_screen_offset(delta_screen_offset)
 
-    def draw(self, screen: pygame.Surface, debug=False) -> None:
+    def draw(self, screen: pygame.Surface) -> None:
         if self.is_landed:
             if self.dx == 0:
                 self.set_action(ActionType.IDLE)
@@ -52,5 +70,5 @@ class Player(MovableEntity):
 
         super().draw(screen)
 
-        if debug:
+        if GameConfig.DEBUG:
             pygame.draw.rect(screen, (255, 0, 0), self.rect, 1)

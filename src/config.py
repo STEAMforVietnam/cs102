@@ -10,6 +10,7 @@ DATA_DIR = Path("data")
 
 
 class GameConfig:
+    DEBUG: bool = False
     NAME: str = "Steam Valley"
     FPS: int = 60
     WIDTH: int = 1280

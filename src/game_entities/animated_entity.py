@@ -1,15 +1,21 @@
-import logging
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, List
+from typing import TYPE_CHECKING, Dict, List, Optional, Sequence
 
 import pygame
 
 from common import util
+from common.event import GameEvent
 from common.types import ActionType
+from common.util import get_logger
 from game_entities.base_entity import BaseEntity
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    from game_entities.world import World
+
+
+logger = get_logger(__name__)
 
 
 class AnimatedEntity(BaseEntity):
@@ -51,11 +57,12 @@ class AnimatedEntity(BaseEntity):
         self.animation_interval_ms: int = animation_interval_ms
         self.last_animation_ms: int = 0
 
-    def update(self) -> None:
+    def update(self, events: Sequence[GameEvent] = tuple(), world: Optional[World] = None) -> None:
         """
         This function should be called at every Game loop,
         to handle state change logic prior to drawing
         """
+        super().update(events)
         current_ms = pygame.time.get_ticks()
         if current_ms - self.last_animation_ms > self.animation_interval_ms:
             self.last_animation_ms = current_ms

@@ -1,9 +1,17 @@
+import logging
 from typing import Optional
 
 import pygame
 
 from common.types import TileType
 from config import GameConfig
+
+logging.basicConfig(level=logging.DEBUG if GameConfig.DEBUG else logging.INFO)
+
+
+def get_logger(name):
+    logger = logging.getLogger(name)
+    return logger
 
 
 def scale_image(image: pygame.Surface, scale: Optional[float] = None):

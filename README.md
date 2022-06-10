@@ -67,3 +67,15 @@ logger.debug(...)
 logger.info(...)
 logger.warning(...)
 ```
+
+## Architecture
+
+The outer loop in `main.py` calls `self.scene_manager.tick()` every game tick.
+
+`self.scene_manager.tick()` query ALL un-processed events in the Event queue by this line:
+
+```python
+events = pygame.event.get()
+```
+
+These events are sent to game entities to handle in the `.update(events, world)` function. 

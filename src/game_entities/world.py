@@ -59,9 +59,9 @@ class World:
         self.delta_screen_offset = new_abs_screen_offset - self.abs_screen_offset
         self.abs_screen_offset = new_abs_screen_offset
 
-    def update(self):
+    def update(self, events):
         for tile in self.tiles.values():
-            tile.update(self)
+            tile.update(events, self)
 
     def draw(self, screen):
         for tile in self.tiles.values():
