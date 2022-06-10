@@ -1,7 +1,14 @@
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING, Optional
 
 from config import GameConfig
 from game_entities.animated_entity import AnimatedEntity
+
+if TYPE_CHECKING:
+    from game_entities.world import World
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,8 +22,8 @@ class MovableEntity(AnimatedEntity):
 
     def __init__(
         self,
-        speed: int,
-        jump_vertical_speed: int,
+        speed: int = 0,
+        jump_vertical_speed: int = 0,
         *args,
         **kwargs,
     ) -> None:
@@ -35,58 +42,25 @@ class MovableEntity(AnimatedEntity):
         self.moving_right: bool = False
         self.is_landed: bool = False  # Let object fall to stable position
 
-    def update(self, ground_tiles=[]):
-        # Calculate Ideal dx dy
-        dx = 0
-        dy = 0
+    def update(self, world: Optional[World] = None) -> None:
+        # Knowing the current state of the subject, we calculate the amount of changes
+        # - dx and dy - that should occur to the player position during this current game tick.
+
+        # Step 1: calculate would-be dx, dy when unobstructed
+        self.dx = 0
+        self.dy += GameConfig.GRAVITY
 
         if self.moving_left:
-            dx = -self.speed
-
+            self.dx = -self.speed
         if self.moving_right:
-            dx = self.speed
+            self.dx = self.speed
 
-        dy = self.dy + GameConfig.GRAVITY
+        # Step 2: update dx, dy to prevent player from overlapping with obstacles
+        self._update_dx_dy_based_on_obstacles(world.get_obstacles())
 
-        # dx, dy in obstacle condition
-        for obstacle in ground_tiles:
-            if obstacle.rect.colliderect(
-                self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height
-            ):
-                dx = 0
-            if obstacle.rect.colliderect(
-                self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height
-            ):
-                if self.dy < 0:
-                    self.dy = 0
-                    dy = (
-                        obstacle.rect.bottom - self.rect.top
-                    )  # the gap between player's head and obstacle above
-                else:
-                    self.dy = 0
-                    self.is_landed = True
-                    dy = (
-                        obstacle.rect.top - self.rect.bottom
-                    )  # the gap between player's feet and ground
-
-        # Update position & speed state
-        self.rect.x += dx
-        self.rect.y += dy
-        self.dx = dx
-        self.dy = dy
-
-        # Restrict absolute world x, y coordinate
-        if self.rect.y > GameConfig.HEIGHT - self.rect.height:
-            self.rect.y = GameConfig.HEIGHT - self.rect.height
-            self.dy = 0
-            self.is_landed = True
-
-        if self.rect.x < 0:
-            self.rect.x = 0
-            self.dx = 0
-        if self.rect.x > GameConfig.WIDTH - self.rect.width:
-            self.rect.x = GameConfig.WIDTH - self.rect.width
-            self.dx = 0
+        # Step 3: update current position by the deltas
+        self.rect.x += self.dx
+        self.rect.y += self.dy
 
         super().update()
 
@@ -100,3 +74,28 @@ class MovableEntity(AnimatedEntity):
         if self.is_landed:
             self.is_landed = False
             self.dy = -self.jump_vertical_speed
+
+    def _update_dx_dy_based_on_obstacles(self, obstacles):
+        """
+        Knowing the position of all obstacle and the would be position of this subject
+        (self.rect.x + self.dx, self.rect.y + self.dy), check if the would be position
+        is colliding with any of the obstacles. If collision happens, restrict the movement
+        by modifying self.dx and(or) self.dy.
+        """
+        for obstacle in obstacles:
+            if obstacle.rect.colliderect(
+                self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height
+            ):
+                # Hitting an obstacle horizontally, prevent horizontal movement altogether:
+                self.dx = 0
+            if obstacle.rect.colliderect(
+                self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height
+            ):
+                # Hitting an obstacle vertically, reduce vertical movement:
+                if self.dy < 0:
+                    # the gap between player's head and obstacle above
+                    self.dy = obstacle.rect.bottom - self.rect.top
+                else:
+                    self.is_landed = True
+                    # the gap between player's feet and ground
+                    self.dy = obstacle.rect.top - self.rect.bottom

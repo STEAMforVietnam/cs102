@@ -1,8 +1,12 @@
+from typing import Dict, Optional
+
 import pygame
 
+from common.types import TileType
+from common.util import load_tile_img
 from config import GameConfig, PlayerConfig
-from game_entities.ground_tile import GroundTile
 from game_entities.player import Player
+from game_entities.world import World
 
 
 class SceneOne:
@@ -13,9 +17,17 @@ class SceneOne:
             (GameConfig.WIDTH, GameConfig.HEIGHT),
         )
 
+        # These tile images will be used to create Entities (using BaseEntity or its subclass)
+        # in World, that later get drawn on the game screen.
+        tile_images: Dict[TileType, Optional[pygame.Surface]] = {
+            tile_type: load_tile_img(tile_type) for tile_type in TileType
+        }
+        self.world = World(tile_images)
+        self.world.load_scene(1)
+
         # TODO: load player position from level data
         self.player = Player(
-            x=10,
+            x=350,
             y=200,
             sprites_dir=PlayerConfig.SPRITES_DIR,
             scale=PlayerConfig.SCALE,
@@ -24,42 +36,16 @@ class SceneOne:
             animation_interval_ms=PlayerConfig.ANIMATION_INTERVAL_MS,
         )
 
-        # TODO: load from csv
-        self.ground_tiles_index = [
-            [0, 0],
-            [1, 0],
-            [2, 0],
-            [3, 1],
-            [4, 2],
-            [5, 2],
-            [6, 2],
-            [7, 2],
-            [8, 2],
-            [9, 2],
-            [10, 2],
-            [14, 3],
-            [15, 3],
-            [16, 3],
-        ]
-
-        self.ground_tiles = []
-        for (xi, yi) in self.ground_tiles_index:
-            self.ground_tiles.append(
-                GroundTile(
-                    GameConfig.TILE_SIZE * xi, GameConfig.HEIGHT - GameConfig.TILE_SIZE * (yi + 1)
-                )
-            )
-
     def tick(self) -> bool:
         self.screen.blit(self.background, (0, 0))
 
         # Game logic
-        self.player.update(ground_tiles=self.ground_tiles)
+        self.world.update()
+        self.player.update(self.world)
 
         # Draw
+        self.world.draw(self.screen)
         self.player.draw(self.screen, debug=True)
-        for tile in self.ground_tiles:
-            tile.draw(self.screen)
 
         return True
 

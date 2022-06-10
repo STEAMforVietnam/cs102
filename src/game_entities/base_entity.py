@@ -1,3 +1,4 @@
+import itertools
 from typing import Tuple
 
 import pygame
@@ -9,12 +10,16 @@ class BaseEntity(pygame.sprite.Sprite):
     Most game entities will be objects of the child classes instead of using this class directly.
     """
 
-    def __init__(self, x: int, y: int, image: pygame.Surface) -> None:
+    gen_id = itertools.count()
+
+    def __init__(self, x: int, y: int, image: pygame.Surface, object_type=None) -> None:
         super().__init__()
+        self.id = next(BaseEntity.gen_id)
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.object_type = object_type
 
     def draw(
         self,

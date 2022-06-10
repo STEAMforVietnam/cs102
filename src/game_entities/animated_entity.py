@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, List
 
 import pygame
+
 from common import util
 from common.types import ActionType
 from game_entities.base_entity import BaseEntity
@@ -26,6 +27,8 @@ class AnimatedEntity(BaseEntity):
         scale: float = 1.0,
         animation_interval_ms: int = 80,
         flip_x: bool = False,
+        *args,
+        **kwargs,
     ) -> None:
         # Load Sprites
         self.sprites: Dict[ActionType, List[pygame.Surface]] = self._load_sprites(
@@ -42,7 +45,7 @@ class AnimatedEntity(BaseEntity):
         if self.flip_x:
             image = pygame.transform.flip(image, flip_x=True, flip_y=False)
 
-        super().__init__(x, y, image)
+        super().__init__(x, y, image, *args, **kwargs)
 
         # minimal time until switching to next sprite
         self.animation_interval_ms: int = animation_interval_ms
