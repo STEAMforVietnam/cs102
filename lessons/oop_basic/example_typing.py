@@ -10,5 +10,5 @@ print(weight)
 print(age)
 
 # List
-thanhvien_cs102: List[str] = ["Tay May", "To Mo", "Bong Ma"]
+thanhvien_cs102: List[str] = ["Tay May", "To Mo", "Robot"]
 print(thanhvien_cs102)
