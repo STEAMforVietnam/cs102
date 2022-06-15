@@ -25,6 +25,18 @@ You will do these steps regularly:
 6. Install dependencies: `pip install -r requirements-dev.txt && pip install -r requirements.txt`
 7. Run game: `python src/main.py`
 
+## Python3 typing
+
+We use `mypy` for static typing checking. Call it with the root of a subproject:
+
+```shell
+mypy src  # checking main project
+mypy lessons/oop_advance/cot_moc_5/  # check the specific lesson checkpoint
+```
+
+**It will shows you all the typing errors. Please attempt to fix as much as possible
+(we do NOT enforce zero error yet).**
+
 ## Code Linter
 
 We use [black](https://black.readthedocs.io/en/stable/) and [flake8](https://flake8.pycqa.org/)

@@ -5,13 +5,13 @@ import pygame
 from pygame import Surface
 from pygame.color import Color
 
-WIDTH: int = 1280
-HEIGHT: int = 768
+SCREEN_WIDTH: int = 1280
+SCREEN_HEIGHT: int = 768
 WHITE: Color = Color(255, 255, 255)
 FPS: int = 30  # Số cảnh mỗi giây (frame per second)
 
 pygame.init()
-screen: Surface = pygame.display.set_mode([WIDTH, HEIGHT])
+screen: Surface = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 clock = pygame.time.Clock()
 
 
@@ -28,7 +28,7 @@ def scale_image(image: Surface, scale: float) -> Surface:
 # Hình nền:
 BACKGROUND_SPRITE: Surface = pygame.image.load("assets/background.png").convert_alpha()
 BACKGROUND_SPRITE.set_alpha(128)
-BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [WIDTH, HEIGHT])
+BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [SCREEN_WIDTH, SCREEN_HEIGHT])
 
 # Game Entities Sprites
 PLAYER_SPRITE: Surface = scale_image(pygame.image.load("assets/player.png"), 0.2)
@@ -44,6 +44,9 @@ class Player:
         self.y: float = y
         self.image: Surface = PLAYER_SPRITE
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
+
 
 class Robot:
     def __init__(self, x: float, y: float) -> None:
@@ -51,12 +54,18 @@ class Robot:
         self.y: float = y
         self.image: Surface = ROBOT_SPRITE
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
 
-class Princess:
+
+class NPC:
     def __init__(self, x: float, y: float) -> None:
         self.x: float = x
         self.y: float = y
         self.image: Surface = TO_MO_SPRITE
+
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
 
 
 class ItemType(enum.Enum):
@@ -75,6 +84,9 @@ class GameItem:
         elif type == ItemType.DIAMOND_RED:
             self.image = DIAMOND_RED_SPRITE
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
+
 
 # Game States:
 player: Player = Player(350, 200)
@@ -91,30 +103,29 @@ list_item: List[GameItem] = [
     GameItem(1000, 400, ItemType.DIAMOND_RED),
 ]
 
-to_mo: Princess = Princess(1000, 50)
+to_mo: NPC = NPC(1000, 50)
 
 # Bắt đầu game
 running: bool = True
 while running:
-    # Tạo hình nền
-    screen.fill(WHITE)
-
-    screen.blit(BACKGROUND_SPRITE, (0, 0))
-
     # Người chơi có tắt màn hình game chưa
     if pygame.event.peek(pygame.QUIT):
         running = False
+        break
 
     # Vẽ các vật phẩm game
-    screen.blit(player.image, (player.x, player.y))
+    screen.fill(WHITE)
+    screen.blit(BACKGROUND_SPRITE, (0, 0))
+
+    player.render(screen)
 
     for robot in list_robot:
-        screen.blit(robot.image, (robot.x, robot.y))
+        robot.render(screen)
 
     for item in list_item:
-        screen.blit(item.image, (item.x, item.y))
+        item.render(screen)
 
-    screen.blit(to_mo.image, (to_mo.x, to_mo.y))
+    to_mo.render(screen)
 
     pygame.display.flip()
     clock.tick(FPS)

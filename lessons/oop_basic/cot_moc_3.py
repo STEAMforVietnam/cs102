@@ -5,13 +5,13 @@ import pygame
 from pygame import Surface
 from pygame.color import Color
 
-WIDTH: int = 1280
-HEIGHT: int = 768
+SCREEN_WIDTH: int = 1280
+SCREEN_HEIGHT: int = 768
 WHITE: Color = Color(255, 255, 255)
 FPS: int = 30  # Số cảnh mỗi giây (frame per second)
 
 pygame.init()
-screen: Surface = pygame.display.set_mode([WIDTH, HEIGHT])
+screen: Surface = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 clock = pygame.time.Clock()
 
 
@@ -28,7 +28,7 @@ def scale_image(image: Surface, scale: float) -> Surface:
 # Hình nền:
 BACKGROUND_SPRITE: Surface = pygame.image.load("assets/background.png").convert_alpha()
 BACKGROUND_SPRITE.set_alpha(128)
-BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [WIDTH, HEIGHT])
+BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [SCREEN_WIDTH, SCREEN_HEIGHT])
 
 # Game Entities Sprites
 PLAYER_SPRITE: Surface = scale_image(pygame.image.load("assets/player.png"), 0.2)
@@ -44,14 +44,28 @@ class Player:
         self.y: float = y
         self.image: Surface = PLAYER_SPRITE
 
-    def move(self, dx: int, dy: int):
+    def _move(self, dx: int, dy: int) -> None:
         new_x = self.x + dx
         new_y = self.y + dy
 
-        if 0 < new_x < WIDTH - self.image.get_width():
+        if 0 < new_x < SCREEN_WIDTH - self.image.get_width():
             self.x = new_x
-        if 0 < new_y < HEIGHT - self.image.get_height():
+        if 0 < new_y < SCREEN_HEIGHT - self.image.get_height():
             self.y = new_y
+
+    def update(self) -> None:
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_UP] or pressed[pygame.K_w]:
+            self._move(0, -10)
+        if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
+            self._move(0, 10)
+        if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
+            self._move(-10, 0)
+        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
+            self._move(10, 0)
+
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
 
 
 class Robot:
@@ -62,25 +76,31 @@ class Robot:
         self.x_heading: float = x_heading
         self.y_heading: float = y_heading
 
-    def move(self):
+    def update(self) -> None:
         self.x = self.x + self.x_heading
         self.y = self.y + self.y_heading
 
-        if self.x > WIDTH - self.image.get_width():
+        if self.x > SCREEN_WIDTH - self.image.get_width():
             self.x_heading = -self.x_heading
         if self.x < 0:
             self.x_heading = -self.x_heading
-        if self.y > HEIGHT - self.image.get_height():
+        if self.y > SCREEN_HEIGHT - self.image.get_height():
             self.y_heading = -self.y_heading
         if self.y < 0:
             self.y_heading = -self.y_heading
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
 
-class Princess:
+
+class NPC:
     def __init__(self, x: float, y: float) -> None:
         self.x: float = x
         self.y: float = y
         self.image: Surface = TO_MO_SPRITE
+
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
 
 
 class ItemType(enum.Enum):
@@ -99,6 +119,9 @@ class GameItem:
         elif type == ItemType.DIAMOND_RED:
             self.image = DIAMOND_RED_SPRITE
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
+
 
 # Game States:
 player: Player = Player(350, 200)
@@ -115,47 +138,39 @@ list_item: List[GameItem] = [
     GameItem(1000, 400, ItemType.DIAMOND_RED),
 ]
 
-to_mo: Princess = Princess(1000, 50)
+to_mo: NPC = NPC(1000, 50)
 
 # Bắt đầu game
 end_game: bool = False
 running: bool = True
 while running:
-    # Tạo hình nền
-    screen.fill(WHITE)
-
-    screen.blit(BACKGROUND_SPRITE, (0, 0))
-
     # Người chơi có tắt màn hình game chưa
     if pygame.event.peek(pygame.QUIT):
         running = False
+        break
 
     # ----------------------------------------
+    # Xử lý logic game
     if not end_game:
-        pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_UP] or pressed[pygame.K_w]:
-            player.move(0, -10)
-        if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
-            player.move(0, 10)
-        if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
-            player.move(-10, 0)
-        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
-            player.move(10, 0)
+        player.update()
 
         for robot in list_robot:
-            robot.move()
+            robot.update()
 
     # ----------------------------------------
     # Vẽ các vật phẩm game
-    screen.blit(player.image, (player.x, player.y))
+    screen.fill(WHITE)
+    screen.blit(BACKGROUND_SPRITE, (0, 0))
+
+    player.render(screen)
 
     for robot in list_robot:
-        screen.blit(robot.image, (robot.x, robot.y))
+        robot.render(screen)
 
     for item in list_item:
-        screen.blit(item.image, (item.x, item.y))
+        item.render(screen)
 
-    screen.blit(to_mo.image, (to_mo.x, to_mo.y))
+    to_mo.render(screen)
 
     pygame.display.flip()
     clock.tick(FPS)

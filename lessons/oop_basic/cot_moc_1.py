@@ -4,13 +4,13 @@ import pygame
 from pygame import Surface
 from pygame.color import Color
 
-WIDTH: int = 1280
-HEIGHT: int = 768
+SCREEN_WIDTH: int = 1280
+SCREEN_HEIGHT: int = 768
 WHITE: Color = Color(255, 255, 255)
 FPS: int = 30  # Số cảnh mỗi giây (frame per second)
 
 pygame.init()
-screen: Surface = pygame.display.set_mode([WIDTH, HEIGHT])
+screen: Surface = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 clock = pygame.time.Clock()
 
 
@@ -27,7 +27,7 @@ def scale_image(image: Surface, scale: float) -> Surface:
 # Hình nền:
 BACKGROUND_SPRITE: Surface = pygame.image.load("assets/background.png").convert_alpha()
 BACKGROUND_SPRITE.set_alpha(128)
-BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [WIDTH, HEIGHT])
+BACKGROUND_SPRITE = pygame.transform.scale(BACKGROUND_SPRITE, [SCREEN_WIDTH, SCREEN_HEIGHT])
 
 # Game Entities Sprites
 PLAYER_SPRITE: Surface = scale_image(pygame.image.load("assets/player.png"), 0.2)
@@ -40,14 +40,15 @@ TO_MO_SPRITE: Surface = scale_image(pygame.image.load("assets/to_mo.png"), 0.2)
 # Bắt đầu game
 running: bool = True
 while running:
+    # Người chơi có tắt màn hình game chưa
+    if pygame.event.peek(pygame.QUIT):
+        running = False
+        break
+
     # Tạo hình nền
     screen.fill(WHITE)
 
     screen.blit(BACKGROUND_SPRITE, (0, 0))
-
-    # Người chơi có tắt màn hình game chưa
-    if pygame.event.peek(pygame.QUIT):
-        running = False
 
     # Vẽ các vật phẩm game
     screen.blit(PLAYER_SPRITE, (350, 200))
