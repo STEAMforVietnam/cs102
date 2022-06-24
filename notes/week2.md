@@ -115,7 +115,7 @@ Là nơi mình lưu trữ một số hàm hay dùng như `scale_image` hay `over
 Chương trình chính bây giờ sẽ ngắn hơn, ở đây ta import lớp và hàm từ các file trên.
 
 * Xem phiên bản dự án sau khi tách nhỏ: [GitHub cs102/tree/w2-1](https://github.com/STEAMforVietnam/cs102/tree/w2-1)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-1...w2-0)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-0...w2-1)
 
 ## Thừa kế (Inheritance)
 
@@ -134,7 +134,7 @@ super().<tên phương thức>(<tham số>)
 ```
 
 * Xem phiên bản dự án sau khi sử dụng tính năng thừa kế: [GitHub cs102/tree/w2-2](https://github.com/STEAMforVietnam/cs102/tree/w2-2)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-2...w2-1)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-1...w2-2)
 
 ## Python package
 
@@ -145,7 +145,7 @@ Dự án lớn sẽ có nhiều thư mục con, chứa thêm nhiều file source
 File này có thể để trống.
 
 * Xem phiên bản dự án sau khi tạo package `entities`: [GitHub cs102/tree/w2-3](https://github.com/STEAMforVietnam/cs102/tree/w2-3)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-3...w2-2)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-2...w2-3)
 
 ## Tạo lớp World
 
@@ -158,7 +158,7 @@ File này có thể để trống.
 và tạo lại `World` mới.
 
 * Xem phiên bản dự án cuối bài học: [GitHub cs102/tree/w2-5](https://github.com/STEAMforVietnam/cs102/tree/w2-5)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-5...w2-3)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-3...w2-5)
 
 # Cấu trúc dự án cuối bài học
 
