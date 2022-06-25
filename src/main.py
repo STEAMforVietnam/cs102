@@ -20,6 +20,12 @@ while running:
         break
 
     world.update()
+    if not world.status.is_running():
+        # Kiểm tra xem người chơi có chọn nhấn ENTER để replay
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_RETURN]:
+            world = World(screen)
+
     world.render()
     pygame.display.flip()
     clock.tick(FPS)
