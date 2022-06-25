@@ -1,9 +1,8 @@
 from typing import List
 
 import pygame
-from entities import NPC, GameItem, GameStatus, Player, Robot
+from entities import BaseEntity, GameItem, GameStatus, Player, Robot
 from pygame.surface import Surface
-from utils import overlap
 
 from common import (
     BACKGROUND_SPRITE,
@@ -39,7 +38,7 @@ list_item: List[GameItem] = [
     GameItem(1000, 400, DIAMOND_RED_SPRITE),
 ]
 
-to_mo: NPC = NPC(1000, 50, TO_MO_SPRITE)
+to_mo: BaseEntity = BaseEntity(1000, 50, TO_MO_SPRITE)
 
 # Bắt đầu game
 status: GameStatus = GameStatus()
@@ -60,16 +59,16 @@ while running:
 
         for item in list_item:
             if not item.hidden:
-                if overlap(player.x, player.y, player.image, item.x, item.y, item.image):
+                if player.touch(item):
                     item.set_hidden()
                     status.update_score(delta=1)  # increase score
 
         for robot in list_robot:
-            if overlap(player.x, player.y, player.image, robot.x, robot.y, robot.image):
+            if player.touch(robot):
                 print("YOU LOST!!")
                 status.update_state(GameState.LOST)
 
-        if overlap(player.x, player.y, player.image, to_mo.x, to_mo.y, to_mo.image):
+        if player.touch(to_mo):
             print("YOU WON!!")
             status.update_state(GameState.WON)
 

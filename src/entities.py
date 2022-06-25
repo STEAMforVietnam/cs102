@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from typing import Optional
 
 import pygame
+import utils
 from pygame.surface import Surface
 
 from common import (
@@ -14,12 +17,20 @@ from common import (
 )
 
 
-class Player:
+class BaseEntity:
     def __init__(self, x: int, y: int, image: Surface) -> None:
         self.x = x
         self.y = y
         self.image = image
 
+    def render(self, screen: Surface) -> None:
+        screen.blit(self.image, (self.x, self.y))
+
+    def touch(self, other: BaseEntity):
+        return utils.overlap(self.x, self.y, self.image, other.x, other.y, other.image)
+
+
+class Player(BaseEntity):
     def _move(self, dx: int, dy: int):
         new_x = self.x + dx
         new_y = self.y + dy
@@ -40,15 +51,10 @@ class Player:
         if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
             self._move(10, 0)
 
-    def render(self, screen: Surface) -> None:
-        screen.blit(self.image, (self.x, self.y))
 
-
-class Robot:
+class Robot(BaseEntity):
     def __init__(self, x: int, y: int, image: Surface, x_heading: int, y_heading: int) -> None:
-        self.x = x
-        self.y = y
-        self.image = image
+        super().__init__(x, y, image)
         self.x_heading = x_heading
         self.y_heading = y_heading
 
@@ -65,25 +71,10 @@ class Robot:
         if self.y < 0:
             self.y_heading = -self.y_heading
 
-    def render(self, screen: Surface) -> None:
-        screen.blit(self.image, (self.x, self.y))
 
-
-class NPC:
+class GameItem(BaseEntity):
     def __init__(self, x: int, y: int, image: Surface) -> None:
-        self.x = x
-        self.y = y
-        self.image = image
-
-    def render(self, screen: Surface) -> None:
-        screen.blit(self.image, (self.x, self.y))
-
-
-class GameItem:
-    def __init__(self, x: int, y: int, image: Surface) -> None:
-        self.x = x
-        self.y = y
-        self.image = image
+        super().__init__(x, y, image)
         self.hidden = False
 
     def set_hidden(self):
@@ -91,7 +82,7 @@ class GameItem:
 
     def render(self, screen: Surface) -> None:
         if not self.hidden:
-            screen.blit(self.image, (self.x, self.y))
+            super().render(screen)
 
 
 class GameStatus:
