@@ -1,7 +1,8 @@
 from typing import List
 
 import pygame
-from entities import BaseEntity, GameItem, GameStatus, Player, Robot
+from entities import BaseEntity, GameItem, Player, Robot
+from game_status import GameStatus
 from pygame.surface import Surface
 
 from common import (
