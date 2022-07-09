@@ -32,13 +32,13 @@ Từ đây, có thể mở thư mục này ra trong IDE yêu thích của bạn.
 Chuyển phiên bản mã nguồn sang cột mốc 0:
 
 ```shell
-git checkout w2-0
+git checkout ls2-0
 ```
 
 Chuyển phiên bản mã nguồn sang cột mốc cuối bài:
 
 ```shell
-git checkout w2-5
+git checkout ls2-5
 ```
 
 Nếu các lệnh `git checkout <tên branch>` báo lỗi và không cho bạn chuyển, hãy đọc về lệnh `git reset --hard` và thử nghiệm.
@@ -114,8 +114,8 @@ Là nơi mình lưu trữ một số hàm hay dùng như `scale_image` hay `over
 
 Chương trình chính bây giờ sẽ ngắn hơn, ở đây ta import lớp và hàm từ các file trên.
 
-* Xem phiên bản dự án sau khi tách nhỏ: [GitHub cs102/tree/w2-1](https://github.com/STEAMforVietnam/cs102/tree/w2-1)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-0...w2-1)
+* Xem phiên bản dự án sau khi tách nhỏ: [GitHub cs102/tree/ls2-1](https://github.com/STEAMforVietnam/cs102/tree/ls2-1)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/ls2-0...ls2-1)
 
 ## Thừa kế (Inheritance)
 
@@ -133,8 +133,8 @@ Khi lớp con cần thay đổi một chút hành vi thừa kế, để chạy p
 super().<tên phương thức>(<tham số>)
 ```
 
-* Xem phiên bản dự án sau khi sử dụng tính năng thừa kế: [GitHub cs102/tree/w2-2](https://github.com/STEAMforVietnam/cs102/tree/w2-2)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-1...w2-2)
+* Xem phiên bản dự án sau khi sử dụng tính năng thừa kế: [GitHub cs102/tree/ls2-2](https://github.com/STEAMforVietnam/cs102/tree/ls2-2)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/ls2-1...ls2-2)
 
 ## Python package
 
@@ -144,8 +144,8 @@ Dự án lớn sẽ có nhiều thư mục con, chứa thêm nhiều file source
 
 File này có thể để trống.
 
-* Xem phiên bản dự án sau khi tạo package `entities`: [GitHub cs102/tree/w2-3](https://github.com/STEAMforVietnam/cs102/tree/w2-3)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-2...w2-3)
+* Xem phiên bản dự án sau khi tạo package `entities`: [GitHub cs102/tree/ls2-3](https://github.com/STEAMforVietnam/cs102/tree/ls2-3)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/ls2-2...ls2-3)
 
 ## Tạo lớp World
 
@@ -157,8 +157,8 @@ File này có thể để trống.
 **Tip:** Sau khi có lớp World, để hiện thực (implement) chức năng replay, chỉ cần kiểm tra các phím nhập bởi người chơi
 và tạo lại `World` mới.
 
-* Xem phiên bản dự án cuối bài học: [GitHub cs102/tree/w2-5](https://github.com/STEAMforVietnam/cs102/tree/w2-5)
-* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/w2-3...w2-5)
+* Xem phiên bản dự án cuối bài học: [GitHub cs102/tree/ls2-5](https://github.com/STEAMforVietnam/cs102/tree/ls2-5)
+* Xem so sánh giữa trước và sau: [GitHub diff](https://github.com/STEAMforVietnam/cs102/compare/ls2-3...ls2-5)
 
 # Cấu trúc dự án cuối bài học
 
