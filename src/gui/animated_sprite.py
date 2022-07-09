@@ -76,7 +76,7 @@ class AnimatedSprite(BaseSprite):
 
         
         for image_file in sprites_dir.iterdir():
-            image = pygame.image.load(str(image_file))
+            image: Surface = pygame.image.load(str(image_file))
 
             sprites.append(util.scale_image(image, scale))
         return sprites
