@@ -62,6 +62,7 @@ class MovableEntity(BaseEntity):
         # Step 3: Use a hardcoded ground (before next lesson)
         if self.rect.bottom >= GameConfig.GROUND_LEVEL:
             self.rect.bottom = GameConfig.GROUND_LEVEL
+            self.dy = 0
 
         # Depends on the subject current action, tweak the sprite rendering.
         self._update_sprite_state()
