@@ -4,6 +4,7 @@ from xmlrpc.client import Boolean
 
 import pygame
 from pygame.rect import Rect
+from pygame import Surface
 
 from common import util
 from common.types import ActionType
@@ -29,7 +30,7 @@ class AnimatedSprite(BaseSprite):
         animation_interval_ms: int = 80,
     ) -> None:
         # Load Sprites
-        self.sprites: pygame.Surface = self._load_sprites(
+        self.sprites: Surface = self._load_sprites(
             sprite_path, scale
         )
 
@@ -48,7 +49,7 @@ class AnimatedSprite(BaseSprite):
         self.animation_interval_ms: int = animation_interval_ms
         self.last_animation_ms: int = 0
 
-    def render(self, screen: pygame.Surface,is_moving: Boolean, *args, **kwargs) -> None:
+    def render(self, screen: Surface,is_moving: Boolean, *args, **kwargs) -> None:
         """
         Redraw at every Game tick
         """
@@ -63,14 +64,14 @@ class AnimatedSprite(BaseSprite):
     @staticmethod
     def _load_sprites(
         sprites_dir: Path, scale: float = 0.1
-    ) -> Dict[ActionType, List[pygame.Surface]]:
+    ) -> Dict[ActionType, List[Surface]]:
         """
         Load all images from directory and convert into a Dictionary
         which maps ActionType to list of Surface
         """
 
         
-        image = pygame.image.load(str(sprites_dir))
+        image: Surface = pygame.image.load(str(sprites_dir))
 
         sprites = util.scale_image(image, scale)
         return sprites
