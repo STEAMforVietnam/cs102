@@ -5,7 +5,7 @@ from pygame.surface import Surface
 
 from common.event import GameEvent
 from common.types import OBSTACLES_TYPES, EntityType
-from config import GameConfig
+from config import GameConfig, WorldData
 from game_entities.base import BaseEntity
 from game_entities.entity_factory import EntityFactory
 from worlds.base_world import BaseWorld
@@ -68,7 +68,8 @@ class World(BaseWorld):
         """
         self.player.sprite.render(screen)
 
-        # TODO: render other entities
+        for entity in self.entities.values():
+            entity.sprite.render(screen)
 
     def add_entity(self, entity_type: EntityType, x: int = 0, y: int = 0) -> int:
         new_entity = EntityFactory.create(entity_type=entity_type, x=x, y=y)
@@ -82,8 +83,19 @@ class World(BaseWorld):
         del self.entities[entity_id]
 
     def load_level(self, level_id):
-        # TODO
-        pass
+        data = WorldData(level_id=level_id).data
+
+        for i, row in enumerate(data):
+            for j, entity_type in enumerate(row):
+                if entity_type == EntityType.EMPTY:
+                    continue
+                x = j * GameConfig.TILE_SIZE
+                y = i * GameConfig.TILE_SIZE
+                self.add_entity(
+                    entity_type=entity_type,
+                    x=x,
+                    y=y,
+                )
 
     def update_screen_offset(self, delta):
         # do not let abs_screen_offset becomes > 0, to prevent overscroll to the left
