@@ -6,6 +6,7 @@ import pygame
 
 from common import util
 from common.event import GameEvent
+from config import GameConfig
 from game_entities.movable import MovableEntity
 
 if TYPE_CHECKING:
@@ -46,4 +47,21 @@ class Player(MovableEntity):
 
     def _update_screen_offset(self):
         """Logics for horizontal world scroll based on player movement"""
-        # TODO
+        delta_screen_offset = 0
+
+        at_right_edge = self.rect.right >= GameConfig.WIDTH
+        at_right_soft_edge = self.rect.right > GameConfig.WIDTH - GameConfig.PLAYER_SOFT_EDGE_WIDTH
+        at_left_edge = self.rect.left <= 0
+        at_left_soft_edge = self.rect.left < GameConfig.PLAYER_SOFT_EDGE_WIDTH
+
+        if (
+            at_left_edge
+            or at_right_edge
+            or (at_left_soft_edge and not self.world.at_left_most())
+            or at_right_soft_edge
+        ):
+            # Undo player position change (player walks in-place)
+            self.rect.x -= self.dx
+            delta_screen_offset = -self.dx
+
+        self.world.update_screen_offset(delta_screen_offset)

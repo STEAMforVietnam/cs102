@@ -69,6 +69,7 @@ class World(BaseWorld):
         self.player.sprite.render(screen)
 
         for entity in self.entities.values():
+            entity.rect.x += self.delta_screen_offset
             entity.sprite.render(screen)
 
     def add_entity(self, entity_type: EntityType, x: int = 0, y: int = 0) -> int:
