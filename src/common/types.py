@@ -21,4 +21,4 @@ class EntityType(enum.Enum):
     COFFEE = 64
 
 
-OBSTACLES_TYPES = set()
+OBSTACLES_TYPES = (EntityType.GROUND,)
