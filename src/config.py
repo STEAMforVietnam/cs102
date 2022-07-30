@@ -14,15 +14,13 @@ pygame.init()
 ASSET_DIR = Path("assets")
 DATA_DIR = Path("data")
 
+FONT_PATH = ASSET_DIR / "fonts" / "arial.ttf"
+
 
 class Color:
     DEFAULT = (0, 0, 255)
     TEXT_DIALOGUE_SUBJECT = (19, 2, 150)
     TEXT_DIALOGUE = (204, 115, 14)
-
-
-class Font:
-    FREESANSBOLD_14 = pygame.font.Font("freesansbold.ttf", 14)
 
 
 class GameConfig:
