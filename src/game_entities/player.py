@@ -51,7 +51,8 @@ class Player(MovableEntity):
                 self._handle_activation()
 
     def _handle_activation(self):
-        if not self.npc_near_by:
+
+        if not self.npc_near_by or not self.npc_near_by.has_dialogue():
             return
         # Broadcast an event for the NPC to handle
         logger.info(f"_handle_activation with: {self.npc_near_by.entity_type}")

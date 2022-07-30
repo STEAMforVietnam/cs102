@@ -1,4 +1,5 @@
 import csv
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -72,6 +73,13 @@ class NpcConfig:
     default_alpha: int = 180  # 255 is fully opaque
 
     def __post_init__(self):
+        with open(
+            DATA_DIR / "dialogues" / f"{self.entity_type.name.lower()}.json", encoding="utf-8"
+        ) as fin:
+            data = json.load(fin)
+            self.name = data["name"]
+            self.dialogues = data["dialogues"]
+
         self.sprite_path = ASSET_DIR / "npcs" / self.entity_type.name.lower()
 
 
