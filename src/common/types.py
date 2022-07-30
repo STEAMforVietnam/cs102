@@ -17,6 +17,7 @@ class EntityType(enum.Enum):
     SHADOW = 9
 
     QUESTION_MARK = 21
+    DIALOGUE_BOX = 22
 
     PLAYER = 41
     NPC_CO_NGA = 42

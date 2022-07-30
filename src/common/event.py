@@ -19,6 +19,7 @@ class EventType(enum.Enum):
 
     START_GAME = pygame.event.custom_type()
     PLAYER_NEAR_NPC = pygame.event.custom_type()
+    PLAYER_ACTIVATE_NPC = pygame.event.custom_type()
 
 
 class GameEvent:

@@ -1,11 +1,12 @@
 from common.types import FRIENDLY_NPC_TYPES, EntityType
-from config import ASSET_DIR, GameConfig, NpcConfig, PlayerConfig, ShadowConfig
+from config import ASSET_DIR, DialogueBoxConfig, GameConfig, NpcConfig, PlayerConfig, ShadowConfig
 from game_entities.base import BaseEntity
 from game_entities.friendly_npc import FriendlyNpc
 from game_entities.player import Player
 from game_entities.shadow import Shadow
 from gui.animated_sprite import AnimatedSprite
 from gui.base_sprite import BaseSprite
+from gui.dialogue_box_sprite import DialogueBoxSprite
 
 
 class EntityFactory:
@@ -56,6 +57,16 @@ class EntityFactory:
                     sprite_path=config.sprite_path,
                     scale=config.scale,
                     animation_interval_ms=config.animation_interval_ms,
+                ),
+            )
+        elif entity_type == EntityType.DIALOGUE_BOX:
+            return BaseEntity(
+                entity_type=entity_type,
+                sprite=DialogueBoxSprite(
+                    x=DialogueBoxConfig.X,
+                    y=DialogueBoxConfig.Y,
+                    sprite_path=DialogueBoxConfig.SPRITE_PATH,
+                    scale=DialogueBoxConfig.SCALE,
                 ),
             )
         else:

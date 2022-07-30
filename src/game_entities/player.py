@@ -47,6 +47,15 @@ class Player(MovableEntity):
                 self.move_left(False)
             elif event.is_key_up(pygame.K_RIGHT, pygame.K_d):
                 self.move_right(False)
+            elif event.is_key_up(pygame.K_e):
+                self._handle_activation()
+
+    def _handle_activation(self):
+        if not self.npc_near_by:
+            return
+        # Broadcast an event for the NPC to handle
+        logger.info(f"_handle_activation with: {self.npc_near_by.entity_type}")
+        GameEvent(EventType.PLAYER_ACTIVATE_NPC, listener_id=self.npc_near_by.id).post()
 
     def _update_npc_near_by(self):
         for npc in self.world.get_friendly_npcs():

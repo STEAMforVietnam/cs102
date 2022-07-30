@@ -28,6 +28,7 @@ class FriendlyNpc(BaseEntity):
         self.npc_config: NpcConfig = npc_config
         self.is_near_player: bool = False
         self.question_mark_id: Optional[int] = None
+        self.dialogue_box_id: Optional[int] = None
 
     def update(self, events: Sequence[GameEvent], world: World) -> None:
         super().update(events, world)
@@ -45,6 +46,8 @@ class FriendlyNpc(BaseEntity):
                 continue
             if event.is_type(EventType.PLAYER_NEAR_NPC):
                 self.is_near_player = True
+            elif event.is_type(EventType.PLAYER_ACTIVATE_NPC):
+                self._activate()
 
     def _highlight(self):
         if not self.question_mark_id:
@@ -57,3 +60,13 @@ class FriendlyNpc(BaseEntity):
         if self.question_mark_id:
             self.world.remove_entity(self.question_mark_id)
             self.question_mark_id = None
+
+    def _activate(self):
+        """
+        Manipulates the dialogue box entity.
+        """
+        logger.info("NPC Activated")
+        if not self.dialogue_box_id:
+            self.dialogue_box_id = self.world.add_entity(EntityType.DIALOGUE_BOX)
+        dialogue_box = self.world.get_entity(self.dialogue_box_id)
+        dialogue_box.sprite.set_text("Xin chào!")
