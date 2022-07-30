@@ -9,3 +9,4 @@ Code and artifacts for CS 102 course.
 * [Crazy Robot - lesson 2](https://github.com/STEAMforVietnam/cs102/tree/ls2-5)
 * [Thach Thuc Gioi Han - lesson 4](https://github.com/STEAMforVietnam/cs102/tree/ls4-5)
 * [Bi An STEAM Valley - lesson 6](https://github.com/STEAMforVietnam/cs102/tree/ls6-final)
+* [Lan Theo Dau Vet - lesson 7](https://github.com/STEAMforVietnam/cs102/tree/ls7-final)
