@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Optional, Sequence
 
 import pygame
 
 from common import util
-from common.event import GameEvent
+from common.event import EventType, GameEvent
 from config import GameConfig
+from game_entities.friendly_npc import FriendlyNpc
 from game_entities.movable import MovableEntity
 
 if TYPE_CHECKING:
@@ -23,9 +24,11 @@ class Player(MovableEntity):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.npc_near_by: Optional[FriendlyNpc] = None
 
     def update(self, events: Sequence[GameEvent], world: World) -> None:
         super().update(events, world)
+        self._update_npc_near_by()
         self._handle_events()
         self._update_screen_offset()
 
@@ -44,6 +47,14 @@ class Player(MovableEntity):
                 self.move_left(False)
             elif event.is_key_up(pygame.K_RIGHT, pygame.K_d):
                 self.move_right(False)
+
+    def _update_npc_near_by(self):
+        for npc in self.world.get_friendly_npcs():
+            if self.collide(npc):
+                # Get a hold of the NPC, and broadcast an event for that NPC to handle
+                self.npc_near_by = npc
+                GameEvent(EventType.PLAYER_NEAR_NPC, listener_id=npc.id).post()
+                break
 
     def _update_screen_offset(self):
         """Logics for horizontal world scroll based on player movement"""

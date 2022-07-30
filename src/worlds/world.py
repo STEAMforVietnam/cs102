@@ -5,7 +5,7 @@ from pygame.surface import Surface
 
 from common import util
 from common.event import GameEvent
-from common.types import COLLECTABLE_TYPES, OBSTACLES_TYPES, EntityType
+from common.types import COLLECTABLE_TYPES, FRIENDLY_NPC_TYPES, OBSTACLES_TYPES, EntityType
 from config import GameConfig, WorldData
 from game_entities.base import BaseEntity
 from game_entities.entity_factory import EntityFactory
@@ -132,4 +132,9 @@ class World(BaseWorld):
     def get_collectable_tiles(self) -> List[BaseEntity]:
         return [
             entity for entity in self.entities.values() if entity.entity_type in COLLECTABLE_TYPES
+        ]
+
+    def get_friendly_npcs(self) -> List[BaseEntity]:
+        return [
+            entity for entity in self.entities.values() if entity.entity_type in FRIENDLY_NPC_TYPES
         ]

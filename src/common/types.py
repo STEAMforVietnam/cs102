@@ -16,6 +16,8 @@ class EntityType(enum.Enum):
     CANDY = 3
     SHADOW = 9
 
+    QUESTION_MARK = 21
+
     PLAYER = 41
     NPC_CO_NGA = 42
 
