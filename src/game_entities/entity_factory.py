@@ -1,6 +1,7 @@
-from common.types import EntityType
-from config import ASSET_DIR, GameConfig, PlayerConfig, ShadowConfig
+from common.types import FRIENDLY_NPC_TYPES, EntityType
+from config import ASSET_DIR, GameConfig, NpcConfig, PlayerConfig, ShadowConfig
 from game_entities.base import BaseEntity
+from game_entities.friendly_npc import FriendlyNpc
 from game_entities.player import Player
 from game_entities.shadow import Shadow
 from gui.animated_sprite import AnimatedSprite
@@ -42,6 +43,19 @@ class EntityFactory:
                     sprite_path=ShadowConfig.SPRITE_PATH,
                     scale=ShadowConfig.SCALE,
                     animation_interval_ms=ShadowConfig.ANIMATION_INTERVAL_MS,
+                ),
+            )
+        elif entity_type in FRIENDLY_NPC_TYPES:
+            config: NpcConfig = NpcConfig(entity_type=entity_type)
+            return FriendlyNpc(
+                entity_type=entity_type,
+                npc_config=config,
+                sprite=AnimatedSprite(
+                    x=x,
+                    y=y,
+                    sprite_path=config.sprite_path,
+                    scale=config.scale,
+                    animation_interval_ms=config.animation_interval_ms,
                 ),
             )
         else:

@@ -17,7 +17,9 @@ class EntityType(enum.Enum):
     SHADOW = 9
 
     PLAYER = 41
+    NPC_CO_NGA = 42
 
 
 OBSTACLES_TYPES = (EntityType.GROUND,)
 COLLECTABLE_TYPES = (EntityType.HEART, EntityType.CANDY)
+FRIENDLY_NPC_TYPES = (EntityType.NPC_CO_NGA,)

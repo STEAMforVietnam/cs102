@@ -65,6 +65,17 @@ class ShadowConfig:
 
 
 @dataclass
+class NpcConfig:
+    entity_type: EntityType
+    scale: float = 0.6
+    animation_interval_ms: int = 900
+    default_alpha: int = 180  # 255 is fully opaque
+
+    def __post_init__(self):
+        self.sprite_path = ASSET_DIR / "npcs" / self.entity_type.name.lower()
+
+
+@dataclass
 class WorldData:
     level_id: int
     data: Optional[List] = None
