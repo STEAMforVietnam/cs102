@@ -1,0 +1,25 @@
+{
+  "name": "Chú Nhân",
+  "dialogues": [
+    [
+      {
+        "Subject": "Táy Máy",
+        "Line": "Anh ơi, em tặng anh chỗ kẹo này nhé."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Ồ, tốt quá."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Văn phòng bóng tối blah blah"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em sẽ đi xua tan năng lượng bóng đen!"
+      }
+    ]
+  ]
+}
+
+
