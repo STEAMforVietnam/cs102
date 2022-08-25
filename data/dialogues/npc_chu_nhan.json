@@ -1,0 +1,37 @@
+{
+  "name": "Chú Nhân",
+  "dialogues": [
+    [
+      {
+        "Subject": "Táy Máy",
+        "Line": "Anh ơi, em tặng anh chỗ kẹo này nhé."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Ồ, tốt quá, cảm ơn em!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Sao trong văn phòng của mình có nhiều bóng đen vậy nhỉ?"
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Đúng rồi, chúng ta đang bị năng lượng tiêu cực bao phủ..."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Chúa tể bóng đen còn độc chiếm cả văn phòng bên cạnh..."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Mọi người đang rất lo lắng."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em sẽ đem năng lương tích cực đi lan toả xua tan bóng đen!"
+      }
+    ]
+  ]
+}
+
+
