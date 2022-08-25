@@ -3,11 +3,9 @@ from pygame.surface import Surface
 
 from common.event import EventType, GameEvent
 from common.sound import handle_music_events, load_music, play_sounds
-from common.types import EntityType
 from common.util import get_logger
 from config import GameConfig
 from worlds.bonus_level_end import BonusLevelEnd
-from worlds.defeated import Defeated
 from worlds.menu import Menu
 from worlds.world import World
 
@@ -62,10 +60,6 @@ class WorldManager:
                 else:
                     # Player finishes a bonus level, show a congrats screen
                     self.start_scene(BonusLevelEnd)
-
-            elif e.is_type(EventType.DIE) and e.get_sender_type() == EntityType.PLAYER:
-                logger.info("Player is dead!")
-                self.start_scene(Defeated)
 
             elif e.is_type(EventType.TOGGLE_SOUND):
                 self.toggle_sound()

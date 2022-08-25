@@ -56,11 +56,6 @@ class Player(AnimatedEntity):
         self._update_inventory_entity()
 
         self._handle_get_hit()
-        if self.hp <= 0:
-            self.die()
-        if self.rect.top > GameConfig.HEIGHT:
-            GameEvent(EventType.FALL, sender_type=self.entity_type).post()
-            self.die()
 
     def count_inventory(self, entity_types: Iterable[EntityType] = tuple()) -> int:
         """
@@ -189,8 +184,11 @@ class Player(AnimatedEntity):
         else:
             self.stop()
             self.last_hit_t = now_ms
-            logger.debug(f"Player HP: {self.hp} -> {self.hp - damage}")
-            self.hp -= damage
+            new_hp = self.hp - damage
+            if new_hp < 0:
+                new_hp = 0
+            logger.debug(f"Player HP: {self.hp} -> {new_hp}")
+            self.hp = new_hp
 
     def _update_screen_offset(self):
         """Logics for horizontal world scroll based on player movement"""
