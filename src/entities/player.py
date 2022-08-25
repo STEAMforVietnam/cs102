@@ -7,7 +7,8 @@ import pygame
 from common import util
 from common.event import EventType, GameEvent
 from common.types import ActionType, EntityType
-from config import GameConfig, PlayerConfig, TrampolineConfig
+from common.util import now
+from config import GameConfig, PlayerConfig, PlayerHpConfig, TrampolineConfig
 from entities.animated_entity import AnimatedEntity
 from entities.friendly_npc import FriendlyNpc
 from entities.trampoline import Trampoline
@@ -29,6 +30,8 @@ class Player(AnimatedEntity):
         self.talking: bool = False
         self.inventory: List = []
         self.inventory_entity_id: Optional[int] = None
+        self.hp = PlayerConfig.MAX_HP
+        self.last_hit_t = now()
 
     def get_x_y_w_h(self) -> tuple:
         """Slightly narrow down the Player rectangle since the head is too big."""
@@ -47,6 +50,17 @@ class Player(AnimatedEntity):
 
         # Manage the dependent entities.
         self._update_inventory_entity()
+        self._handle_get_hit()
+
+    def _handle_get_hit(self) -> None:
+        for shadow in self.world.get_entities(EntityType.SHADOW):
+            if self.collide(shadow):
+                self._take_damage(1)
+
+    def _take_damage(self, damage: int) -> None:
+        if now() - self.last_hit_t > PlayerConfig.INVULNERABLE_DURATION_MS:
+            self.last_hit_t = now()
+            self.hp -= damage
 
     def count_inventory(self, entity_types: Iterable[EntityType] = tuple()) -> int:
         """
@@ -181,3 +195,18 @@ class Player(AnimatedEntity):
                     ActionType.ANIMATE, duration_ms=TrampolineConfig.ANIMATION_DURATION_MS
                 )
                 self.jump_with_trampoline()
+
+    def render(self, screen: pygame.Surface, *args, **kwargs):
+        super().render(screen, *args, **kwargs)
+
+        for i in range(0, PlayerConfig.MAX_HP):
+            if i < self.hp:
+                screen.blit(
+                    pygame.image.load(PlayerHpConfig.FULL_HEART_PATH),
+                    (PlayerHpConfig.X + i * PlayerHpConfig.X_STEP, PlayerHpConfig.Y),
+                )
+            else:
+                screen.blit(
+                    pygame.image.load(PlayerHpConfig.EMPTY_HEART_PATH),
+                    (PlayerHpConfig.X + i * PlayerHpConfig.X_STEP, PlayerHpConfig.Y),
+                )
