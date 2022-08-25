@@ -21,7 +21,6 @@ class Color:
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     LOADING_BAR = (255, 51, 153)
-    BOSS_HP_BAR = (255, 51, 153)
     TEXT_DIALOGUE_SUBJECT = (19, 2, 150)
     TEXT_DIALOGUE = (204, 115, 14)
     TEXT_INVENTORY_CNT = (255, 255, 0)
@@ -122,15 +121,6 @@ class ShadowConfig:
     ANIMATION_INTERVAL_MS: int = 200
     SPEED: int = 1
     DAMAGE: int = 1
-
-
-class ShadowBossConfig:
-    SPRITE_PATH: Path = ASSET_DIR / "npcs" / "shadow"
-    SCALE: float = 0.6
-    ANIMATION_INTERVAL_MS: int = 200
-    SPEED: int = 1
-    DAMAGE: int = 1
-    INITIAL_HP: int = 100
 
 
 class TrampolineConfig:

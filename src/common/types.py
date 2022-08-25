@@ -27,8 +27,6 @@ class EntityType(enum.Enum):
     TRAMPOLINE_PART_SPRING = 31
     TRAMPOLINE_PART_FRAME = 32
 
-    SHADOW_BOSS = 40
-
     # Collectable Items 60 -> 79
     CANDY = 60
     HEART = 61

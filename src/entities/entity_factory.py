@@ -10,7 +10,6 @@ from config import (
     PlayerConfig,
     PlayerHpConfig,
     PlayerInventoryConfig,
-    ShadowBossConfig,
     ShadowConfig,
     TrampolineConfig,
 )
@@ -23,7 +22,6 @@ from entities.player_hp import PlayerHp
 from entities.player_inventory import PlayerInventory
 from entities.shadow import Shadow
 from entities.shadow_alpha import ShadowAlpha
-from entities.shadow_boss import ShadowBoss
 from entities.trampoline import Trampoline
 from entities.trampoline_part import TrampolinePart
 
@@ -102,18 +100,6 @@ class EntityFactory:
                 speed=ShadowConfig.SPEED,
                 damage=ShadowConfig.DAMAGE,
             )
-        elif entity_type == EntityType.SHADOW_BOSS:
-            return ShadowBoss(
-                entity_type=entity_type,
-                x=x,
-                y=y,
-                sprite_path=ShadowBossConfig.SPRITE_PATH,
-                scale=ShadowBossConfig.SCALE,
-                animation_interval_ms=ShadowBossConfig.ANIMATION_INTERVAL_MS,
-                speed=ShadowBossConfig.SPEED,
-                damage=ShadowBossConfig.DAMAGE,
-            )
-
         elif entity_type in FRIENDLY_NPC_TYPES:
             config: NpcConfig = NpcConfig(entity_type=entity_type)
             return FriendlyNpc(
