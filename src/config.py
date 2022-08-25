@@ -78,8 +78,6 @@ class PlayerConfig:
     INITIAL_HP: int = 3
     INVULNERABLE_DURATION_MS: int = 1000
 
-    HURT_DURATION_MS: int = 80 * 4
-
     # TODO: we have 7 sprites for ActionType.THROW but only use 2-3 now
     THROW_DURATION_MS: int = 170 * 60 // GameConfig.FPS
 
@@ -136,8 +134,6 @@ class ShadowBossConfig:
 
     ANGRY_INTERVAL_MS: int = 7000
     ANGRY_DURATION_MS: int = 2000
-
-    HURT_DURATION_MS: int = 500
 
 
 class ShadowBulletConfig:

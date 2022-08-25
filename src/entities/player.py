@@ -107,8 +107,8 @@ class Player(AnimatedEntity):
         """
         for event in self.events:
 
-            # Only allow player to move when NOT being hurt / NOT talking to some NPC.
-            if not self.talking and not self.is_hurting:
+            # Only allow player to move when NOT talking to some NPC.
+            if not self.talking:
                 if event.is_key_down(pygame.K_LEFT, pygame.K_a):
                     self.move_left(True)
                 elif event.is_key_down(pygame.K_RIGHT, pygame.K_d):
@@ -193,7 +193,6 @@ class Player(AnimatedEntity):
             return
         else:
             self.stop()
-            self.start_hurt(duration_ms=PlayerConfig.HURT_DURATION_MS)
             self.last_hit_t = now_ms
             logger.debug(f"Player HP: {self.hp} -> {self.hp - damage}")
             self.hp -= damage

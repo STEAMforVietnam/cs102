@@ -9,7 +9,6 @@ class ActionType(enum.Enum):
     CRAWL = "crawl"
     THROW = "throw"
     DYING = "dying"
-    HURT = "hurt"
     ANGRY = "angry"
 
 

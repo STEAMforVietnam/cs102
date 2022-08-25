@@ -46,7 +46,6 @@ class ShadowBoss(Shadow):
 
     def _take_damage(self, damage: int):
         self.hp -= damage
-        self.start_hurt(duration_ms=ShadowBossConfig.HURT_DURATION_MS)
 
     def _handle_get_hit(self):
         bullet: Bullet

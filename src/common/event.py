@@ -26,7 +26,6 @@ class EventType(enum.Enum):
     VICTORY = pygame.event.custom_type()
 
     JUMP = pygame.event.custom_type()
-    HURT = pygame.event.custom_type()
     FALL = pygame.event.custom_type()
     DIE = pygame.event.custom_type()
     COLLECT_ITEM = pygame.event.custom_type()

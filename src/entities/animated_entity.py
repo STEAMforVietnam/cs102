@@ -8,7 +8,7 @@ from pygame.rect import Rect
 from pygame.surface import Surface
 
 from common import util
-from common.event import EventType, GameEvent
+from common.event import GameEvent
 from common.types import ActionType
 from common.util import now
 from entities.movable_entity import MovableEntity
@@ -24,13 +24,12 @@ class EntityAction:
     This is a helper class for AnimatedEntity below. To see how to call AnimatedEntity.set_action(),
     see that function's docs string.
 
-    A subject can sometimes being in a special states such as being hurt, being angry,
-    dying, etc.
+    A subject can sometimes being in a special states such as being angry, dying, etc.
 
     From the animation (GUI) viewpoint, we don't differentiate between action and state.
 
     The "movement-based" actions are (IDLE, MOVE, JUMP, CRAWL).
-    The "state" actions are (DYING, HURT, ANGRY, THROW, ...). These "state" actions can override
+    The "state" actions are (DYING, ANGRY, THROW, ...). These "state" actions can override
     "movement-based" actions for a few hundred milliseconds at a time.
     """
 
@@ -53,7 +52,6 @@ class EntityAction:
             ActionType.MOVE,
             ActionType.JUMP,
             ActionType.CRAWL,
-            ActionType.HURT,
         )
 
 
@@ -76,8 +74,6 @@ class AnimatedEntity(MovableEntity):
         self.rect: Rect = self.image.get_rect()
         self.rect.x, self.rect.y = kwargs["x"], kwargs["y"]
 
-        self.hurt_end_t: int = 0
-
     def update(self, events: Sequence[GameEvent], world: World) -> None:
         super().update(events, world)
 
@@ -94,10 +90,6 @@ class AnimatedEntity(MovableEntity):
         if self.action.is_prioritize() and not self.action.is_expired():
             return
 
-        if self.is_hurting:
-            self.set_action(ActionType.HURT)
-            return
-
         # Deduct the current action based on movement.
         if not self.is_landed:
             self.set_action(ActionType.JUMP)
@@ -111,14 +103,6 @@ class AnimatedEntity(MovableEntity):
             self.set_flip_x(False)
         elif self.dx < 0:
             self.set_flip_x(True)
-
-    def start_hurt(self, duration_ms: int):
-        self.hurt_end_t = now() + duration_ms
-        GameEvent(EventType.HURT, sender_type=self.entity_type).post()
-
-    @property
-    def is_hurting(self):
-        return now() < self.hurt_end_t
 
     def set_action(
         self,
