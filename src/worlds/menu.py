@@ -31,7 +31,7 @@ class Menu(BaseScene):
 
         frame = self.menu.add.frame_v(1000, 580)
         if not self.can_resume:
-            frame.pack(self.menu.add.button("Play", partial(start_game, level_id=3)))
+            frame.pack(self.menu.add.button("Play", partial(start_game, level_id=1)))
         else:
             frame.pack(self.menu.add.button("Resume", GameEvent(EventType.RESUME_GAME).post))
             frame.pack(

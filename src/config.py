@@ -27,7 +27,7 @@ class Color:
 
 
 class GameConfig:
-    DEBUG: bool = False
+    DEBUG: bool = True
     NAME: str = "STEAM Valley"
     FPS: int = 60
     WIDTH: int = 1248
@@ -74,19 +74,10 @@ class PlayerConfig:
     JUMP_WITH_TRAMPOLINE_SPEED: int = 40
     # minimal time until switching to the next sprite in sequence
     ANIMATION_INTERVAL_MS: int = 70 * 60 // GameConfig.FPS
-    INITIAL_HP: int = 3
     INVULNERABLE_DURATION_MS: int = 1000
 
     # TODO: we have 7 sprites for ActionType.THROW but only use 2-3 now
     THROW_DURATION_MS: int = 170 * 60 // GameConfig.FPS
-
-
-class PlayerHpConfig:
-    X: int = 10
-    Y: int = 30
-    X_STEP: int = 60  # distance between 2 consecutive hearts
-    FULL_HEART_PATH: Path = ASSET_DIR / "items" / "full_heart.png"
-    EMPTY_HEART_PATH: Path = ASSET_DIR / "items" / "empty_heart.png"
 
 
 class PlayerInventoryConfig:
