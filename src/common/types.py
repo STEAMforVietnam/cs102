@@ -9,7 +9,6 @@ class ActionType(enum.Enum):
     CRAWL = "crawl"
     THROW = "throw"
     DYING = "dying"
-    ANGRY = "angry"
 
 
 class EntityType(enum.Enum):
@@ -42,7 +41,6 @@ class EntityType(enum.Enum):
     QUESTION_MARK = 101
     DIALOGUE_BOX = 102
     PLAYER_BULLET = 103
-    SHADOW_BULLET = 104
     PLAYER_HP = 105
     PLAYER_INVENTORY = 106
     HP_HEART = 107

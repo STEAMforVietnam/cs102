@@ -11,7 +11,6 @@ from config import (
     PlayerHpConfig,
     PlayerInventoryConfig,
     ShadowBossConfig,
-    ShadowBulletConfig,
     ShadowConfig,
     TrampolineConfig,
 )
@@ -81,19 +80,6 @@ class EntityFactory:
                 gravity=PlayerBulletConfig.GRAVITY,
                 speed=PlayerBulletConfig.SPEED,
                 damage=PlayerBulletConfig.DAMAGE,
-            )
-        elif entity_type == EntityType.SHADOW_BULLET:
-            return Bullet(
-                entity_type=entity_type,
-                ttl_ms=ShadowBulletConfig.TTL_MS,
-                x=x,
-                y=y,
-                init_dy=ShadowBulletConfig.INIT_DY,
-                sprite_path=ShadowBulletConfig.SPRITE_PATH,
-                scale=ShadowBulletConfig.SCALE,
-                gravity=ShadowBulletConfig.GRAVITY,
-                speed=ShadowBulletConfig.SPEED,
-                damage=ShadowBulletConfig.DAMAGE,
             )
         elif entity_type == EntityType.SHADOW_ALPHA:
             return ShadowAlpha(

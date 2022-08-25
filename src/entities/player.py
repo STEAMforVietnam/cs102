@@ -178,11 +178,6 @@ class Player(AnimatedEntity):
             ball.move_right()
 
     def _handle_get_hit(self):
-        for bullet in self.world.get_entities(EntityType.SHADOW_BULLET):
-            if self.collide(bullet):
-                self.world.remove_entity(bullet.id)
-                self._take_damage(bullet.damage)
-
         for shadow in self.world.get_entities(EntityType.SHADOW):
             if self.collide(shadow):
                 self._take_damage(shadow.damage)

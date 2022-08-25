@@ -1,10 +1,8 @@
 import logging
-import random
 
 from common import util
 from common.event import EventType, GameEvent
-from common.types import ActionType, EntityType
-from common.util import now
+from common.types import EntityType
 from config import Color, ShadowBossConfig
 from entities.bullet import Bullet
 from entities.shadow import Shadow
@@ -22,27 +20,6 @@ class ShadowBoss(Shadow):
         super().__init__(*args, **kwargs)
         self.initial_hp = ShadowBossConfig.INITIAL_HP
         self.hp = self.initial_hp
-        self.recent_action_started_at[ActionType.ANGRY] = now()
-
-    def _update_action(self):
-        if self.set_action(
-            ActionType.ANGRY,
-            duration_ms=ShadowBossConfig.ANGRY_DURATION_MS,
-            interval_ms=ShadowBossConfig.ANGRY_INTERVAL_MS,
-        ):
-            self._get_angry()
-        super()._update_action()
-
-    def _get_angry(self):
-        for _ in range(10):
-            bullet_id = self.world.add_entity(
-                EntityType.SHADOW_BULLET,
-                self.rect.centerx + random.random() * self.rect.width / 2,
-                self.rect.centery + random.random() * self.rect.height / 2,
-            )
-
-            bullet: Bullet = self.world.get_entity(bullet_id)
-            bullet.move_random()
 
     def _take_damage(self, damage: int):
         self.hp -= damage

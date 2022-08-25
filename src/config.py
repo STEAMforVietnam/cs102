@@ -132,23 +132,6 @@ class ShadowBossConfig:
     DAMAGE: int = 1
     INITIAL_HP: int = 100
 
-    ANGRY_INTERVAL_MS: int = 7000
-    ANGRY_DURATION_MS: int = 2000
-
-
-class ShadowBulletConfig:
-    SPRITE_PATH: Path = ASSET_DIR / "items" / "shadow_bullet.png"
-    SCALE: float = 0.05
-    SPEED: int = 5
-    GRAVITY: int = 0.3
-    DAMAGE: int = 1
-
-    # initial vertical movement
-    INIT_DY: int = -15
-
-    # the time between creation and deletion of entities of this type
-    TTL_MS: int = 3000
-
 
 class TrampolineConfig:
     SPRITE_PATH: Path = ASSET_DIR / "items" / "trampoline"

@@ -24,12 +24,12 @@ class EntityAction:
     This is a helper class for AnimatedEntity below. To see how to call AnimatedEntity.set_action(),
     see that function's docs string.
 
-    A subject can sometimes being in a special states such as being angry, dying, etc.
+    A subject can sometimes being in a special states such as dying, etc.
 
     From the animation (GUI) viewpoint, we don't differentiate between action and state.
 
     The "movement-based" actions are (IDLE, MOVE, JUMP, CRAWL).
-    The "state" actions are (DYING, ANGRY, THROW, ...). These "state" actions can override
+    The "state" actions are (DYING, THROW, ...). These "state" actions can override
     "movement-based" actions for a few hundred milliseconds at a time.
     """
 
