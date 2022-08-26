@@ -62,6 +62,9 @@ class Player(AnimatedEntity):
             self.last_hit_t = now()
             self.hp -= damage
 
+        if self.hp <= 0:
+            self.die()
+
     def count_inventory(self, entity_types: Iterable[EntityType] = tuple()) -> int:
         """
         Returns the number of collected entities,
