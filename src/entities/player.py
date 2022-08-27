@@ -66,6 +66,7 @@ class Player(AnimatedEntity):
         if now() - self.last_hit_t > PlayerConfig.INVULNERABLE_DURATION_MS:
             self.last_hit_t = now()
             self.hp -= damage
+            self.start_hurt(duration_ms=PlayerConfig.INVULNERABLE_DURATION_MS)
 
         if self.hp <= 0:
             self.die()
