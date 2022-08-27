@@ -106,6 +106,7 @@ class WorldManager:
             self.worlds[Menu.__name__] = Menu(self.screen, can_resume=True)
 
     def start_scene(self, scene_class):
+        logger.info(f"Starting scene: {scene_class.__name__}")
         self.worlds.update({scene_class.__name__: scene_class(self.screen)})
         self.active_world = scene_class.__name__
 
