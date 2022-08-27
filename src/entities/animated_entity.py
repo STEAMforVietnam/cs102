@@ -111,7 +111,6 @@ class AnimatedEntity(MovableEntity):
             self.set_flip_x(True)
 
     def start_hurt(self, duration_ms: int):
-        self.stop()
         self.hurt_end_t = now() + duration_ms
         GameEvent(EventType.HURT, sender_type=self.entity_type).post()
 
