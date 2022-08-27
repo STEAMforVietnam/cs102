@@ -61,4 +61,5 @@ class ShadowBoss(Shadow):
             )
 
     def __del__(self):
-        GameEvent(EventType.VICTORY).post()
+        if self.hp <= 0:
+            GameEvent(EventType.VICTORY).post()
