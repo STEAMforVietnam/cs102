@@ -8,8 +8,7 @@ from common import util
 from common.event import EventType, GameEvent
 from common.types import ActionType, EntityType
 from config import GameConfig
-# <-- COT MOC 4 -->
-# from config import PlayerConfig
+from config import PlayerConfig
 from entities.animated_entity import AnimatedEntity
 from entities.friendly_npc import FriendlyNpc
 
@@ -91,9 +90,8 @@ class Player(AnimatedEntity):
                 self.move_right(False)
             elif event.is_key_up(pygame.K_e):
                 self._handle_activation()
-            # <-- COT MOC 4 -->
-            # elif event.is_key_down(pygame.K_f):
-            #     self._handle_throw()
+            elif event.is_key_down(pygame.K_f):
+                self._handle_throw()
             elif event.is_type(EventType.NPC_DIALOGUE_END):
                 self.talking = False
 
@@ -129,24 +127,23 @@ class Player(AnimatedEntity):
                 if entity.entity_type == EntityType.LEVEL_END_FLAG:
                     GameEvent(EventType.LEVEL_END).post()
 
-    # <-- COT MOC 4 -->
-    # def _handle_throw(self):
-    #     """
-    #     Spawns a ball at Player position, around the shoulder-level.
-    #     Set it motions to go left or right depending on the facing of Player.
-    #     :return:
-    #     """
-    #     self.set_action(ActionType.THROW, duration_ms=PlayerConfig.THROW_DURATION_MS)
-    #     ball_id = self.world.add_entity(
-    #         EntityType.PLAYER_BULLET,
-    #         self.rect.centerx,
-    #         self.rect.centery - 30,
-    #     )
-    #     ball = self.world.get_entity(ball_id)
-    #     if self.get_flip_x():
-    #         ball.move_left()
-    #     else:
-    #         ball.move_right()
+    def _handle_throw(self):
+        """
+        Spawns a ball at Player position, around the shoulder-level.
+        Set it motions to go left or right depending on the facing of Player.
+        :return:
+        """
+        self.set_action(ActionType.THROW, duration_ms=PlayerConfig.THROW_DURATION_MS)
+        ball_id = self.world.add_entity(
+            EntityType.PLAYER_BULLET,
+            self.rect.centerx,
+            self.rect.centery - 30,
+        )
+        ball = self.world.get_entity(ball_id)
+        if self.get_flip_x():
+            ball.move_left()
+        else:
+            ball.move_right()
 
     def _update_screen_offset(self):
         """Logics for horizontal world scroll based on player movement"""

@@ -37,13 +37,13 @@ class GameConfig:
     PLAYER_SOFT_EDGE_WIDTH: int = 300
 
     MENU_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "menu.wav"
-    MENU_MUSIC_VOLUME: float = 0.12
+    MENU_MUSIC_VOLUME: float = 1
 
     BONUS_LEVEL_END_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "victory.wav"
     DEFEATED_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "defeated.wav"
 
-    INGAME_MUSIC_VOLUME: float = 0.05
-    SOUND_EFFECT_VOLUME: float = 0.18
+    INGAME_MUSIC_VOLUME: float = 1
+    SOUND_EFFECT_VOLUME: float = 1
 
 
 class LevelLoadingBarConfig:
