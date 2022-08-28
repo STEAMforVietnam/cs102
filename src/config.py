@@ -28,7 +28,7 @@ class Color:
 
 
 class GameConfig:
-    DEBUG: bool = False
+    DEBUG: bool = True
     NAME: str = "STEAM Valley"
     FPS: int = 60
     WIDTH: int = 1248
