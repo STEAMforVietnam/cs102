@@ -1,0 +1,31 @@
+{
+  "name": "Cô Nga",
+  "dialogues": [
+    [
+      {
+        "Subject": "Cô Nga",
+        "Line": "Xin chào em! Em tên là gì?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Xin chào cô! Em tên là Táy Máy. Em là thực tập sinh mới ạ."
+      },
+      {
+        "Subject": "Cô Nga",
+        "Line": "Ồ, tốt quá. Cô chúc em có một kỳ thực tập vui vẻ nhé!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Vâng ạ!"
+      }
+    ],
+    [
+      {
+        "Subject": "Cô Nga",
+        "Line": "Em cứ tham quan văn phòng đi nhé."
+      }
+    ]
+  ]
+}
+
+
