@@ -1,0 +1,44 @@
+{
+  "name": "Chú Nam",
+  "dialogues": [
+    [
+      {
+        "Subject": "Chú Nam",
+        "Line": "Em là Táy Máy, thực tập sinh mới phải không?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Dạ đúng rồi ạ."
+      },
+      {
+        "Subject": "Chú Nam",
+        "Line": "Em đi tham quan vui vẻ nhé."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Nhưng ở đây đường đi tiếp cao quá ạ..."
+      },
+      {
+        "Subject": "Chú Nam",
+        "Line": " Aha, anh có thể làm một cái bật nhún!"
+      },
+      {
+        "Subject": "Chú Nam",
+        "Line": "Em kiếm cho anh một số linh kiện để làm nhé?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Được ạ!",
+        "QuestToStart": "TRAMPOLINE"
+      }
+    ],
+    [
+      {
+        "Subject": "Chú Nam",
+        "Line": "Em kiếm được đủ linh kiện chưa?"
+      }
+    ]
+  ]
+}
+
+
