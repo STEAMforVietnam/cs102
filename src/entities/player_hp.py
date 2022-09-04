@@ -16,6 +16,7 @@ class PlayerHp(BaseEntity):
         self.empty_heart = BaseEntity(
             entity_type=EntityType.HP_HEART, x=0, y=0, sprite_path=PlayerHpConfig.EMPTY_HEART_PATH
         )
+        self.rect = self.full_heart.rect
 
     def set_hp(self, max_hp: int, hp: int):
         """Set the backend data, called by Player."""
