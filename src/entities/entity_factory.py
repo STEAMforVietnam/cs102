@@ -128,7 +128,6 @@ class EntityFactory:
                 speed=ShadowBossConfig.SPEED,
                 damage=ShadowBossConfig.DAMAGE,
             )
-
         elif entity_type in FRIENDLY_NPC_TYPES:
             config: NpcConfig = NpcConfig(entity_type=entity_type)
             return FriendlyNpc(
