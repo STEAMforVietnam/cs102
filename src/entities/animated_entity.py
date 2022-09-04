@@ -194,7 +194,7 @@ class AnimatedEntity(MovableEntity):
             for image_file in sorted(sprite_subdir.iterdir()):
                 if image_file.name.startswith(".") or not image_file.is_file():
                     continue
-                image = pygame.image.load(str(image_file))
+                image = pygame.image.load(str(image_file)).convert_alpha()
                 action_sprites.append(util.scale_image(image, scale))
                 cnt += 1
 

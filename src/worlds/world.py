@@ -11,6 +11,7 @@ from common.types import (
     FIXED_POSITION_TYPES,
     FRIENDLY_NPC_TYPES,
     OBSTACLES_TYPES,
+    TRAMPOLINE_PART_TYPES,
     EntityType,
 )
 from common.util import get_logger
@@ -88,7 +89,16 @@ class World(BaseScene):
         for entity_id in list(self.entities):
             if entity_id not in self.entities:
                 continue
-            self.entities[entity_id].update(events, self)
+
+            # Only update the entities near by.
+            # Further entities do not need to interact with Player just yet.
+            if (
+                self.entities[entity_id].entity_type in TRAMPOLINE_PART_TYPES
+                or -GameConfig.WIDTH * 0.4
+                < self.entities[entity_id].rect.x
+                < GameConfig.WIDTH * 1.4
+            ):
+                self.entities[entity_id].update(events, self)
 
     def render(self, screen):
         """

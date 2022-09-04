@@ -52,7 +52,9 @@ class BaseEntity:
         self.flip_x: bool = False
 
         if self.sprite_path and self.sprite_path.exists():
-            self.image = util.scale_image(pygame.image.load(self.sprite_path), self.scale)
+            self.image = util.scale_image(
+                pygame.image.load(self.sprite_path).convert_alpha(), self.scale
+            )
             self.rect: Rect = self.image.get_rect()
             self.rect.x, self.rect.y = x, y
 
