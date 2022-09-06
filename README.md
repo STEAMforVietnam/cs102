@@ -1,4 +1,5 @@
 # STEAM for Vietnam - CS 102 
+Hello tớ là Nam và đây là dự án cuối khóa của tớ.
 
 Xem ghi chú tóm tắt các bài học: [LINK](https://github.com/STEAMforVietnam/cs102/tree/lesson-notes/notes)
 
