@@ -68,7 +68,7 @@ class ShadowBoss(Shadow):
         if self.hp > 0:
             util.display_text(
                 screen,
-                f"{self.hp} / 100",
+                f"{self.hp} / 150",
                 x=self.rect.x,
                 y=self.rect.top + self.HP_TEXT_HEIGHT_OFFSET,
                 color=Color.BOSS_HP_BAR,
