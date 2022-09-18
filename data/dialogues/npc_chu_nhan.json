@@ -1,0 +1,45 @@
+{
+  "name": "Chú Nhân",
+  "dialogues": [
+    [
+      {
+        "Subject": "Táy Máy",
+        "Line": "Anh ơi, anh có sao không?"
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Anh đang có chút mệt mỏi."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em tặng anh chỗ kẹo này nhé."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Ồ, tốt quá, anh cảm thấy khoẻ hơn rồi, cảm ơn em!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Sao trong văn phòng của mình có nhiều bóng đen vậy ạ?"
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Vì thung lũng STEAM đang bị năng lượng tiêu cực bao phủ..."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Năng lượng này kết thành những bóng đen khiến mọi người mệt mỏi."
+      },
+      {
+        "Subject": "Chú Nhân",
+        "Line": "Đứng đầu là chúa tể bóng đen, đang đóng giữ gần đây."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em sẽ lan toả năng lương tích cực để xua tan bóng đen!"
+      }
+    ]
+  ]
+}
+
+
